@@ -1,6 +1,6 @@
 -- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 5.3.0.5
+-- Version: 5.3.0.6
 -- Author: GnomTEC
 -- Copyright 2012-2013 by GnomTEC
 -- http://www.gnomtec.de/
@@ -1427,6 +1427,14 @@ function GnomTEC_CityMaps:OnEnable()
 	-- initialize some parts of GUI 
 	GNOMTEC_CITYMAPS_FRAME_INFO_CloseButton:HookScript("OnClick",GNOMTEC_CITYMAPS_FRAME_INFO_CloseButton_OnClick);
 	
+	-- setup POI data base with informations from MSP flags
+	local realm = GetRealmName()
+	if GnomTEC_CityMaps_Flags[realm] then
+		local key, value
+		for key,value in pairs(GnomTEC_CityMaps_Flags[realm]) do
+			GnomTEC_CityMaps:UpdatePOI(realm, key)
+		end
+	end	
 end
 
 -- function called on disable of addon
