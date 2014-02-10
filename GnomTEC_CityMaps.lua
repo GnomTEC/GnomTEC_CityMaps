@@ -1,8 +1,8 @@
 ﻿-- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 5.4.2.13
+-- Version: 5.4.2.14
 -- Author: GnomTEC
--- Copyright 2012-2013 by GnomTEC
+-- Copyright 2012-2014 by GnomTEC
 -- http://www.gnomtec.de/
 -- **********************************************************************
 -- load localization first.
@@ -20,11 +20,14 @@ GnomTEC_CityMaps_Flags = {
 -- static data
 GnomTEC_CityMaps_UsedBy = {}
 
+-- Announcements which will flash POI icons
+GnomTEC_CityMaps_Announcements = {}
+
+-- options
 GnomTEC_CityMaps_Options = {
 	["ShowStaticData"] = true,
 	["ShowMSPData"] = true,
 	["ShowPOILabel"] = false,
-	
 }
 
 -- ----------------------------------------------------------------------
@@ -37,6 +40,7 @@ local CONST_POIICON_USED = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIIC
 local CONST_POIICON_USED_WITH_NPC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_USED_WITH_NPC"
 local CONST_POIICON_PUBLIC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_PUBLIC"
 local CONST_POIICON_GNOMTEC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_GNOMTEC"
+local CONST_POIICON_FLASH = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_FLASH"
 
 -- default static data (initialized with "Die Aldor" demo data)
 local CONST_USEDBY_DEFAULT = {
@@ -144,7 +148,7 @@ local optionsMain = {
 				descriptionLicense = {
 					order = 5,
 					type = "description",
-					name = "|cffffd700".."Copyright"..": ".._G["HIGHLIGHT_FONT_COLOR_CODE"].."(c)2012-2013 by GnomTEC",
+					name = "|cffffd700".."Copyright"..": ".._G["HIGHLIGHT_FONT_COLOR_CODE"].."(c)2012-2014 by GnomTEC",
 				},
 			}
 		},
@@ -2669,6 +2673,7 @@ local function GnomTEC_CityMaps_POIFrame_OnEnter(self)
 
 			local mspText = ""
 			local usedByText = ""
+			local announcementsText = ""
 
 			if (GnomTEC_CityMaps_Options["ShowMSPData"]) then
 				if POI[id].MSP then
@@ -2698,8 +2703,17 @@ local function GnomTEC_CityMaps_POIFrame_OnEnter(self)
 			if (GnomTEC_CityMaps_Options["ShowStaticData"]) then
 				usedByText = "|n|n|cFFFFFF80--- Genutzt von (statische Liste)---|r|n"..(GnomTEC_CityMaps_UsedBy[GetRealmName()][id] or "<frei>")
 			end
-
-			GNOMTEC_CITYMAPS_FRAME_INFO_SCROLL_DESCRIPTION:SetText("|cFFFFFF80--- Engine ---|r|n"..POI[id].description..usedByText..mspText)
+			
+			if (GnomTEC_CityMaps_Announcements[id]) then
+				for key,value in pairs(GnomTEC_CityMaps_Announcements[id]["ANNOUNCEMENTS"]) do
+					announcementsText = key..": "..value["DATE"].." ("..value["TIME_START"].."-"..value["TIME_END"]..") - "..value["ANNOUNCEMENT"].."|n"
+				end
+			end
+			if ("" ~= announcementsText) then
+				announcementsText = "|n|n|cFFFFFF80--- Ankündigungen---|r|n"..announcementsText
+			end
+			
+			GNOMTEC_CITYMAPS_FRAME_INFO_SCROLL_DESCRIPTION:SetText("|cFFFFFF80--- Engine ---|r|n"..POI[id].description..usedByText..mspText..announcementsText)
 			GNOMTEC_CITYMAPS_FRAME_INFO_SCROLL:UpdateScrollChildRect()
 			GNOMTEC_CITYMAPS_FRAME_INFO_SCROLL_SLIDER:SetMinMaxValues(0, GNOMTEC_CITYMAPS_FRAME_INFO_SCROLL:GetVerticalScrollRange())
 			GNOMTEC_CITYMAPS_FRAME_INFO_SCROLL_SLIDER:SetValue(0) 
@@ -2785,9 +2799,6 @@ function GnomTEC_CityMaps:ShowPOI(id)
 		if (POI[id].public) then
 			POITexture:SetTexture(CONST_POIICON_PUBLIC)
 			POILabel:SetText("|cFF0000FF"..POI[id].localId.."|r")
-		elseif (POI[id].GnomTEC and GnomTEC_CityMaps_Options["ShowStaticData"]) then
-			POITexture:SetTexture(CONST_POIICON_GNOMTEC)
-			POILabel:SetText("|cFFFF00FF"..POI[id].localId.."|r")
 		elseif ((GnomTEC_CityMaps_UsedBy[GetRealmName()][id] and GnomTEC_CityMaps_Options["ShowStaticData"]) or (mspData and GnomTEC_CityMaps_Options["ShowMSPData"]))then		
 			if (POI[id].npc) then
 				POITexture:SetTexture(CONST_POIICON_USED_WITH_NPC)
@@ -2816,6 +2827,38 @@ function GnomTEC_CityMaps:ShowPOI(id)
 		end
 		POIFrame:Show();		
 	end			
+end
+
+-- function to let some POI flash on actual map
+function GnomTEC_CityMaps:FlashPOIs()
+	local hour,minute = GetGameTime();
+	local actualTime = hour*100 + minute
+	local	weekday, month, day, year = CalendarGetDate();
+	local actualDate = (((year *100) + month) * 100) + day	
+	local cleanup = false
+		
+	-- flash all POIs which have a actual announcement
+	for key,value in pairs(GnomTEC_CityMaps_Announcements) do
+	 	local POIFrame = getglobal("GNOMTEC_CITYMAPS_FRAME_POI_"..key)
+		if (POIFrame and POI[key]) then
+		 	if ((value["DATE"] == actualDate) and (value["TIME_END"] >= actualTime)) then
+				local POITexture = POIFrame.texture
+				if (POITexture:GetTexture() == CONST_POIICON_FLASH) then
+					GnomTEC_CityMaps:ShowPOI(key)
+				else
+					POITexture:SetTexture(CONST_POIICON_FLASH)
+				end
+			elseif ((value["DATE"] < actualDate) or ((value["DATE"] == actualDate) and (value["TIME_END"] < actualTime))) then
+				GnomTEC_CityMaps:ShowPOI(key)
+				cleanup = true
+			end
+		end
+	end
+	
+	-- cleanup announcements
+	if (cleanup) then
+		GnomTEC_CityMaps:CleanupAnnouncement()	
+	end
 end
 
 -- function to set map which should be displayed
@@ -2856,9 +2899,11 @@ end
 function GnomTEC_CityMaps:TimerEvent()
 	local t = GetTime()
 		
-	-- Update Position every second
+	-- Update Position every second and flash some POIs
 	if ((t-lastTimerEvent) > 1) then
 		GnomTEC_CityMaps:ShowPlayerPosition()
+		
+		GnomTEC_CityMaps:FlashPOIs()
 		
 		lastTimerEvent = t
 	end
@@ -3171,6 +3216,132 @@ function GnomTEC_CityMaps:ExportStaticData(realm,map)
 	return exportData
 end
 
+function GnomTEC_CityMaps:CleanupAnnouncement()
+	local hour,minute = GetGameTime();
+	local actualTime = hour*100 + minute
+	local	weekday, month, day, year = CalendarGetDate();
+	local actualDate = (((year *100) + month) * 100) + day	
+
+	-- cleanup announcements
+	local cleanup = {}
+	for key,value in pairs(GnomTEC_CityMaps_Announcements) do
+		-- cleanup announcement from single players
+		local cleanup_a = {}
+		for key_a,value_a in pairs(GnomTEC_CityMaps_Announcements[key]["ANNOUNCEMENTS"]) do
+			if ((value_a["DATE"] < actualDate) or ((value_a["DATE"] == actualDate) and (value_a["TIME_END"] < actualTime))) then
+				cleanup_a[key_a] = true
+			end
+		end
+		for key_a,value_a in pairs(cleanup_a) do
+			GnomTEC_CityMaps_Announcements[key]["ANNOUNCEMENTS"][key_a] = nil
+		end
+		
+		local time_start = nil
+		local time_end = nil
+		local date = nil
+		-- recalculate date, time_start and time_end for earliest announcement for the poi
+		for key_a,value_a in pairs(GnomTEC_CityMaps_Announcements[key]["ANNOUNCEMENTS"]) do
+			if (not date) then
+				date = value_a["DATE"]
+				time_start = value_a["TIME_START"]
+				time_end = value_a["TIME_END"]
+			elseif (date > value_a["DATE"]) then
+				date = value_a["DATE"]
+				time_start = value_a["TIME_START"]
+				time_end = value_a["TIME_END"]
+			elseif (date == value_a["DATE"]) then
+				if (time_start > value_a["TIME_START"]) then
+					date = value_a["DATE"]
+					time_start = value_a["TIME_START"]
+					time_end = value_a["TIME_END"]
+				end
+			end			
+		end
+		
+		if (not date) then
+			cleanup[key] = true
+		else
+			value["DATE"] = date
+			value["TIME_START"] = time_start
+			value["TIME_END"] = time_end
+		end
+	end
+	for key,value in pairs(cleanup) do
+		GnomTEC_CityMaps_Announcements[key] = nil
+	end
+
+end
+
+function GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+	local player, realm = strsplit( "-", sender, 2 )
+	realm = string.gsub(realm or GetRealmName(), "%s+", "")
+	for poi, value in string.gmatch(message,"%*(%a+_%a+%d+)([:0-9%*]+)") do
+		local time_start = nil
+		local time_end = nil
+		local time_duration = nil
+		local pattern = "%*"..string.gsub(poi..value,"%*","%%%*")
+		local announcement = string.gsub(message,pattern,"")
+		poi = string.upper(poi)
+		value = string.gsub(value,":",":0")
+		for time in string.gmatch(value,":(%d+)") do
+			if (not time_start) then
+				time_start = tonumber(time)
+			elseif (not time_end) then
+				time_end = tonumber(time)
+			elseif (not time_duration) then
+				time_duration = tonumber(time)
+			end			
+		end
+	
+		if (not GnomTEC_CityMaps_Announcements[poi]) then
+			GnomTEC_CityMaps_Announcements[poi] = {}
+		end
+		if (not GnomTEC_CityMaps_Announcements[poi]["ANNOUNCEMENTS"]) then
+			GnomTEC_CityMaps_Announcements[poi]["ANNOUNCEMENTS"] = {}
+		end
+
+		local hour,minute = GetGameTime();
+		local actualTime = hour*100 + minute
+		local	weekday, month, day, year = CalendarGetDate();
+		local actualDate = (((year *100) + month) * 100) + day	
+		
+		-- calculate time values
+		if (not time_start) then
+			time_start = actualTime			
+		elseif (time_start > 2359) or (0 == time_start) then
+			time_start = actualTime
+		end
+		
+		if (not time_end) then
+			time_end = 2359			
+		elseif (time_end > 2359) or (0 == time_end) or (time_end < time_start) then
+			time_end = 2359
+		end
+		
+		if (time_duration) then
+			if (time_duration > 0) then
+				time_end = time_start + time_duration
+				if (time_end > 2359) then
+					time_end = 2359
+				end
+			end
+		end
+		
+		if (time_end < time_start) then
+		
+		end
+
+		GnomTEC_CityMaps_Announcements[poi]["ANNOUNCEMENTS"][player.."-"..realm] = {
+			["ANNOUNCEMENT"] = announcement,
+			["DATE"] = actualDate,
+			["TIME_START"] = time_start,
+			["TIME_END"] = time_end,			
+		}
+		
+		GnomTEC_CityMaps:CleanupAnnouncement()
+	end
+end
+
 -- ----------------------------------------------------------------------
 -- Frame event handler and functions
 -- ----------------------------------------------------------------------
@@ -3202,6 +3373,49 @@ end
 -- ----------------------------------------------------------------------
 -- Event handler
 -- ----------------------------------------------------------------------
+function GnomTEC_CityMaps:CHAT_MSG_BATTLEGROUND(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
+
+function GnomTEC_CityMaps:CHAT_MSG_CHANNEL(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
+
+function GnomTEC_CityMaps:CHAT_MSG_EMOTE(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
+
+function GnomTEC_CityMaps:CHAT_MSG_GUILD(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
+
+function GnomTEC_CityMaps:CHAT_MSG_OFFICER(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
+
+function GnomTEC_CityMaps:CHAT_MSG_PARTY(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
+
+function GnomTEC_CityMaps:CHAT_MSG_RAID(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
+
+function GnomTEC_CityMaps:CHAT_MSG_SAY(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
+
+function GnomTEC_CityMaps:CHAT_MSG_TEXT_EMOTE(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
+
+function GnomTEC_CityMaps:CHAT_MSG_WHISPER(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
+
+function GnomTEC_CityMaps:CHAT_MSG_YELL(eventName, message, sender)	
+	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
+end
 
 -- ----------------------------------------------------------------------
 -- Addon OnInitialize, OnEnable and OnDisable
@@ -3248,6 +3462,17 @@ function GnomTEC_CityMaps:OnEnable()
 		
 	-- initialize hooks and events
 	table.insert( msp_GnomTEC.callback.received, GnomTEC_CityMaps_MSPcallback )
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_BATTLEGROUND");
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_CHANNEL");
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_EMOTE");
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_GUILD");
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_OFFICER");
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_PARTY");
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_RAID");
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_SAY");
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_TEXT_EMOTE");
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_WHISPER");
+	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_YELL");
 
 	-- initialize some parts of GUI 
 	GNOMTEC_CITYMAPS_FRAME_INFO_CloseButton:HookScript("OnClick",GNOMTEC_CITYMAPS_FRAME_INFO_CloseButton_OnClick);
@@ -3259,6 +3484,9 @@ function GnomTEC_CityMaps:OnEnable()
 			GnomTEC_CityMaps:UpdatePOI(realm, key)
 		end
 	end	
+	
+	-- cleanup announcements
+	GnomTEC_CityMaps:CleanupAnnouncement()	
 end
 
 -- function called on disable of addon

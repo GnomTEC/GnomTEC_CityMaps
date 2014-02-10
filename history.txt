@@ -1,6 +1,10 @@
 GnomTEC CityMaps Addon - Change History 
 ==============================
 
+5.4.2.14 (2014-01-26)
+============
+- Added announcement support
+
 5.4.2.13 (2013-12-24)
 ============
 - Added import/export for Darnassus POIs
