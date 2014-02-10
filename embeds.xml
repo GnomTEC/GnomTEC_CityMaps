@@ -18,6 +18,7 @@
   <Include file="Libs\ChatThrottleLib\ChatThrottleLib.lua"/>
   <Include file="Libs\LibBabble-Zone-3.0\lib.xml"/>
   <Include file="Libs\LibTourist-3.0\lib.xml"/>
+  <Include file="Libs\LibMSP_GnomTEC\LibMSP_GnomTEC.lua"/>
 </Ui>
 
 

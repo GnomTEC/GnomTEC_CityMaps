@@ -185,24 +185,119 @@
 					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
 				</Backdrop>
 				<Frames>
-					<EditBox name="$parent_DESCRIPTION" setAllPoints="true" multiline="true" autofocus="false">
-						<FontString inherits="GameFontWhite"/>
+					<ScrollFrame name="$parent_SCROLL" resizable="true" setAllPoints="true">
 						<Anchors>
 							<Anchor point="TOPLEFT">
 								<Offset x="220" y="-30"/>
 							</Anchor>
-							<Anchor point="RIGHT">
-								<Offset x="-10" y="0"/>
+							<Anchor point="BOTTOMRIGHT">
+								<Offset x="-10" y="10" />
 							</Anchor>
 						</Anchors>
-						<Size x="270" y="150" />
+						<Frames>
+							<Slider name="$parent_SLIDER" resizable="true" setAllPoints="true">
+								<Anchors>
+									<Anchor point="TOPRIGHT">
+										<Offset x="0" y="-16" />
+									</Anchor>
+									<Anchor point="BOTTOMRIGHT">
+										<Offset x="0" y="16" />
+									</Anchor>
+								</Anchors>	
+								<Size>
+									<AbsDimension x="16" y="43"/>
+								</Size>
+								<Frames>
+									<Button name="$parentScrollUpButton" inherits="UIPanelScrollUpButtonTemplate">
+										<Anchors>
+											<Anchor point="BOTTOM" relativePoint="TOP"/>
+										</Anchors>
+										<Scripts>
+											<OnClick>
+												local parent = self:GetParent();
+												parent:SetValue(parent:GetValue() - (parent:GetHeight() / 2));
+												PlaySound("UChatScrollButton");
+											</OnClick>
+											<OnEnter>
+												local parent = self:GetParent();
+												parentOfParent = parent:GetParent();
+												parentOfParent:UpdateScrollChildRect();
+												parent:SetMinMaxValues(0, parentOfParent:GetVerticalScrollRange());
+												parent:SetValue(parentOfParent:GetVerticalScroll());   
+											</OnEnter>
+										</Scripts>
+									</Button>
+									<Button name="$parentScrollDownButton" inherits="UIPanelScrollDownButtonTemplate">
+										<Anchors>
+											<Anchor point="TOP" relativePoint="BOTTOM"/>
+										</Anchors>	
+										<Scripts>
+											<OnClick>
+												local parent = self:GetParent();
+												parent:SetValue(parent:GetValue() + (parent:GetHeight() / 2));
+												PlaySound("UChatScrollButton");
+											</OnClick>
+											<OnEnter>
+												local parent = self:GetParent();
+												parentOfParent = parent:GetParent();
+												parentOfParent:UpdateScrollChildRect();
+												parent:SetMinMaxValues(0, parentOfParent:GetVerticalScrollRange());
+												parent:SetValue(parentOfParent:GetVerticalScroll());   
+											</OnEnter>
+										</Scripts>
+									</Button>
+								</Frames>
+								<Scripts>
+									<OnValueChanged>
+										self:GetParent():SetVerticalScroll(value);
+									</OnValueChanged>
+									<OnEnter>
+										local parent = self:GetParent();
+										parent:UpdateScrollChildRect();
+										self:SetMinMaxValues(0, parent:GetVerticalScrollRange());
+										self:SetValue(parent:GetVerticalScroll());   
+									</OnEnter>
+								</Scripts>
+								<ThumbTexture name="$parentThumbTexture" inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob">
+									<Size>
+										<AbsDimension x="16" y="16"/>
+									</Size>
+								</ThumbTexture>
+							</Slider>
+						</Frames>
+						<ScrollChild>
+							<EditBox name="$parent_DESCRIPTION" parentKey="child" resizable="true" setAllPoints="true" multiline="true" autofocus="false">
+								<FontString inherits="GameFontWhite"/>
+								<Scripts>
+									<OnLoad>
+										self:EnableKeyboard(false);
+										self:EnableMouse(false);	
+									</OnLoad>
+									<OnSizeChanged>
+										local parent = self:GetParent();
+		--								self:SetWidth(parent:GetWidth()-16);		
+										parent:UpdateScrollChildRect();
+									</OnSizeChanged>
+								</Scripts>
+							</EditBox>
+						</ScrollChild>
 						<Scripts>
-							<OnLoad>
-								self:EnableKeyboard(false);
-								self:EnableMouse(false);	
-							</OnLoad>
+							<OnSizeChanged>
+								local child = self.child;
+								child:SetWidth(self:GetWidth()-16);		
+								self:UpdateScrollChildRect();
+							</OnSizeChanged>
 						</Scripts>
-					</EditBox>
+					</ScrollFrame>
+					<Button name="$parent_CloseButton" inherits="UIPanelCloseButton" hidden="true">
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
 				</Frames>
 				<Layers>
 					<Layer>
@@ -218,15 +313,6 @@
 							</Anchors>
 							<Size x="280" y="18" />
 						</FontString>
-						<FontString name="$parent_LOCALID" inherits="GameFontNormalLargeLeft" justifyH="RIGHT">
-							<Color r="1.0" g="1.0" b="0.0"/>
-							<Anchors>
-								<Anchor point="BOTTOMRIGHT">
-									<Offset x="-10" y="10"/>
-								</Anchor>
-							</Anchors>
-							<Size x="35" y="18" />
-						</FontString>
 						<Texture name="$parent_PICTURE" file="Interface\WorldMap\StormwindCity\StormwindCity1">
 							<TexCoords top="0.0" left="0.0" bottom="0.5859375" right="0.78125"/>
 							<Size x="200" y="150" />
@@ -236,14 +322,53 @@
 								</Anchor>
 							</Anchors>
 						</Texture>
+						<FontString name="$parent_LOCALID" inherits="GameFontNormalLargeLeft" justifyH="RIGHT">
+							<Color r="1.0" g="1.0" b="0.0"/>
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" relativeTo="$parent_PICTURE">
+									<Offset x="-1" y="1"/>
+								</Anchor>
+							</Anchors>
+							<Size x="35" y="18" />
+						</FontString>
 					</Layer>
 				</Layers>
 			</Frame>
-			<Button name="$parent_SELECTMAP_BUTTON" inherits="GameMenuButtonTemplate" text="Sturmwind">
-				<Size x="590" y="30" />
+			<Button name="$parent_CloseButton" inherits="UIPanelCloseButton">
 				<Anchors>
-					<Anchor point="BOTTOM" relativePoint="Bottom">
-						<Offset x="0" y="20" />
+					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parent_CONFIGURATION">
+				<Size>
+					<AbsDimension x="32" y="32"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
+						<Offset x="-10" y="20" />
+					</Anchor>
+				</Anchors>
+				<NormalTexture file="Interface\ICONS\INV_Gizmo_02" />
+				<PushedTexture file="Interface\ICONS\INV_Gizmo_02" />
+				<HighlightTexture file="Interface\ICONS\INV_Gizmo_02" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>
+						GnomTEC_CityMaps:OpenConfiguration();		
+					</OnClick>
+				</Scripts>
+			</Button>			
+			<Button name="$parent_SELECTMAP_BUTTON" inherits="GameMenuButtonTemplate" text="Sturmwind">
+				<Size x="590" y="32" />
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT">
+						<Offset x="10" y="20" />
+					</Anchor>
+					<Anchor point="RIGHT" relativeTo="$parent_CONFIGURATION" relativePoint="LEFT">
+						<Offset x="0" y="0" />
 					</Anchor>
 				</Anchors>
 				<Scripts>

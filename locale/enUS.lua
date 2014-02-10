@@ -4,3 +4,6 @@ local L = AceLocale:NewLocale("GnomTEC_CityMaps", "enUS", true)
 if not L then return end
 
 L["L_SHOWMAP"] = "Show map"
+L["L_OPTIONS_VIEW"] = "Display options"
+L["L_OPTIONS_VIEW_SHOWSTATICDATA"] = "Use internal, static data for display of building usage"
+L["L_OPTIONS_VIEW_SHOWMSPDATA"] = "Use data from rp flags for display of building usage"
