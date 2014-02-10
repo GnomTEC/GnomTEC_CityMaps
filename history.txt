@@ -1,6 +1,10 @@
 GnomTEC CityMaps Addon - Change History 
 ==============================
 
+V5.3.0.2 (2013-05-30)
+============
+- Added Ironforge POIs (Area A)
+
 V5.3.0.1 (2013-05-30)
 ============
 - Initial version
