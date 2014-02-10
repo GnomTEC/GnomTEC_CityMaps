@@ -225,7 +225,7 @@
 									<Offset x="-10" y="10"/>
 								</Anchor>
 							</Anchors>
-							<Size x="30" y="18" />
+							<Size x="35" y="18" />
 						</FontString>
 						<Texture name="$parent_PICTURE" file="Interface\WorldMap\StormwindCity\StormwindCity1">
 							<TexCoords top="0.0" left="0.0" bottom="0.5859375" right="0.78125"/>
