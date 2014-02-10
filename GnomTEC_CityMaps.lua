@@ -1,6 +1,6 @@
 -- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 5.3.0.6
+-- Version: 5.3.0.7
 -- Author: GnomTEC
 -- Copyright 2012-2013 by GnomTEC
 -- http://www.gnomtec.de/
@@ -16,6 +16,71 @@ GnomTEC_CityMaps_Flags = {
 		[UnitName("player")] = {};
 	},
 }
+
+-- static data (initialized with "Die ALdor" demo data
+GnomTEC_CityMaps_UsedBy = {
+	["Die Aldor"] = {
+		["IF_A1"]="Girmodan",
+		["IF_A2"]="Lara Feuerkabel und Orilla",
+		["IF_A3"]=nil,
+		["IF_A4"]=nil,
+		["IF_A5"]=nil,
+		["IF_A6"]=nil,
+		["IF_A7"]=nil,
+		["IF_A8"]="Lemu",
+		["IF_A9"]=nil,
+		["IF_A10"]=nil,
+		["IF_A11"]=nil,
+		["IF_A12"]=nil,
+		["IF_A13"]=nil,
+		["IF_A14"]="Silberbart's Kuriositäten",
+		["IF_A15"]="Arom Goldbart",
+		["IF_B1"]="Söldnerbund Dämmersturm",
+		["IF_B2"]="Handelsbund von Diarmai (völkergemischt)/ Strumhämmer",
+		["IF_B3"]=nil,
+		["IF_B4"]=nil,
+		["IF_B5"]=nil,
+		["IF_B6"]="Togas",
+		["IF_B7"]=nil,
+		["IF_B8"]="Nioni Silberstößel & Gamblin (WG)",
+		["IF_B9"]=nil,
+		["IF_C1"]=nil,
+		["IF_C2"]=nil,
+		["IF_C3"]="Erenea Kade",
+		["IF_C4"]="Garam Siedefaust & Luzula Schwarzgrund (Wohn- & Geschäftsräume)",
+		["IF_C5"]="Breogir",
+		["IF_D1"]=nil,
+		["IF_D2"]="GnomTEC Niederlassung Eisenschmiede|n(Effie Flammfix)",
+		["IF_D3"]="Thelsamar (Laden)",
+		["IF_D4"]="Thelsamar (Besprechungsraum)",
+		["IF_E1"]=nil,
+		["IF_E2"]=nil,
+		["IF_E3"]=nil,
+		["IF_E4"]=nil,
+		["IF_F1"]=nil,
+		["IF_F2"]="Glofur Taverne",
+		["IF_F3"]=" Militär Eisenschmiede",
+		["IF_F4"]=nil,
+		["IF_F5"]="Ballasch Donnerbart ",
+		["IF_F6"]=nil,
+		["IF_F7"]="Donnerbarts Donnerbüchsen",
+		["IF_G1"]=nil,
+		["IF_G2"]="Baccùs Silberbarts",
+		["IF_G3"]=nil,
+		["IF_G4"]=nil,
+		["IF_G5"]=nil,
+		["IF_G6"]=nil,
+		["IF_G7"]=nil,
+		["IF_G8"]=nil,
+		["IF_G9"]=nil,
+		["IF_G10"]="Zum brodelnden Kupferkessel",
+		["IF_G11"]="Graccas",
+		["IF_G12"]=nil,
+		["IF_G13"]="Wachstube von Militär Eisenschmiede",
+		["IF_G14"]=nil,
+	},
+}
+
 
 GnomTEC_CityMaps_Options = {
 	["ShowStaticData"] = true,
@@ -117,6 +182,24 @@ local optionsView = {
 	},
 }
 
+local optionsData = {
+	name = L["L_OPTIONS_DATA"].." (Realm: "..GetRealmName()..")",
+	type = 'group',
+	args = {
+		CityMapsOptionDataIronforge = {
+			type = "input",
+			name = L["L_OPTIONS_DATA_IRONFORGE"],
+			desc = "",
+			set = function(info,val) GnomTEC_CityMaps:ImportStaticData(GetRealmName(),"Ironforge",val); GnomTEC_Badge:SetMSP() end,
+    		get = function(info) return GnomTEC_CityMaps:ExportStaticData(GetRealmName(),"Ironforge") end,
+			multiline = 10,
+			width = 'full',
+			order = 1
+		},
+	},
+}
+
+
 
 -- maps which are supported by addon
 local availableMaps = {
@@ -171,7 +254,6 @@ local POI = {
 		y = 0.668,
 		npc = true,
 		public = true,
-		usedBy = nil,
 	},	
 	["IF_A1"] = {
 		name = "---",
@@ -183,7 +265,6 @@ local POI = {
 		y = 0.885,		
 		npc = nil,
 		public = nil,
-		usedBy = "Girmodan",
 	},
 	["IF_A2"] = {
 		name = "---",
@@ -195,7 +276,6 @@ local POI = {
 		y = 0.883,		
 		npc = nil,
 		public = nil,
-		usedBy = "Lara Feuerkabel und Orilla",
 	},
  	["IF_A3"] = {
 		name = "---",
@@ -207,7 +287,6 @@ local POI = {
 		y = 0.871,		
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
  	["IF_A4"] = {
 		name = "Besucherzentrum von Eisenschmiede",
@@ -219,7 +298,6 @@ local POI = {
 		y = 0.849,		
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
  	["IF_A5"] = {
 		name = "Auktionshaus",
@@ -231,7 +309,6 @@ local POI = {
 		y = 0.740,		
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
  	["IF_A6"] = {
 		name = "Barims Reagenzien",
@@ -243,7 +320,6 @@ local POI = {
 		y = 0.575,		
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
  	["IF_A7"] = {
 		name = "Steinfeuertaverne",
@@ -255,7 +331,6 @@ local POI = {
 		y = 0.522,		
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
  	["IF_A8"] = {
 		name = "---",
@@ -267,7 +342,6 @@ local POI = {
 		y = 0.382,		
 		npc = nil,
 		public = nil,
-		usedBy = "Lemu",
 	},	
  	["IF_A9"] = {
 		name = "Barbier",
@@ -279,7 +353,6 @@ local POI = {
 		y = 0.512,		
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
  	["IF_A10"] = {
 		name = "Rüstkammer von Eisenschmiede",
@@ -291,7 +364,6 @@ local POI = {
 		y = 0.589,		
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
  	["IF_A11"] = {
 		name = "Bank",
@@ -303,7 +375,6 @@ local POI = {
 		y = 0.623,		
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
  	["IF_A12"] = {
 		name = "Stahlzorns Waffenkaufhaus",
@@ -315,7 +386,6 @@ local POI = {
 		y = 0.676,		
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
  	["IF_A13"] = {
 		name = "Zischeldrehs Gemischtwaren",
@@ -327,7 +397,6 @@ local POI = {
 		y = 0.753,		
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
  	["IF_A14"] = {
 		name = "---",
@@ -339,7 +408,6 @@ local POI = {
 		y = 0.767,		
 		npc = nil,
 		public = nil,
-		usedBy = "Silberbart's Kuriositäten",
 	},	
  	["IF_A15"] = {
 		name = "---",
@@ -351,7 +419,6 @@ local POI = {
 		y = 0.783,		
 		npc = nil,
 		public = nil,
-		usedBy = "Arom Goldbart",
 	},	
 	["IF_B"] = {
 		name = "Das Mystikerviertel",
@@ -363,7 +430,6 @@ local POI = {
 		y = 0.176,
 		npc = true,
 		public = true,
-		usedBy = nil,
 	},
 	["IF_B1"] = {
 		name = "---",
@@ -375,7 +441,6 @@ local POI = {
 		y = 0.272,		
 		npc = nil,
 		public = nil,
-		usedBy = "Söldnerbund Dämmersturm",
 	},
 	["IF_B2"] = {
 		name = "---",
@@ -387,7 +452,6 @@ local POI = {
 		y = 0.204,
 		npc = nil,
 		public = nil,
-		usedBy = "Handelsbund von Diarmai (völkergemischt)/ Strumhämmer",
 	},
 	["IF_B3"] = {
 		name = "Der kämpfende Hexer",
@@ -399,7 +463,6 @@ local POI = {
 		y = 0.171,
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
 	["IF_B4"] = {
 		name = "Halle der Mysterien",
@@ -411,7 +474,6 @@ local POI = {
 		y = 0.084,
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_B5"] = {
 		name = "---",
@@ -423,7 +485,6 @@ local POI = {
 		y = 0.047,
 		npc = nil,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_B6"] = {
 		name = "---",
@@ -435,7 +496,6 @@ local POI = {
 		y = 0.026,
 		npc = nil,
 		public = nil,
-		usedBy = "Togas",
 	},
 	["IF_B7"] = {
 		name = "Maevas mystische Bekleidung",
@@ -447,7 +507,6 @@ local POI = {
 		y = 0.055,
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_B8"] = {
 		name = "---",
@@ -459,7 +518,6 @@ local POI = {
 		y = 0.226,
 		npc = nil,
 		public = nil,
-		usedBy = "Nioni Silberstößel & Gamblin (WG)",
 	},
 	["IF_B9"] = {
 		name = "Beerlangs Reagenzien",
@@ -471,7 +529,6 @@ local POI = {
 		y = 0.277,
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_C"] = {
 		name = "Das düstere Viertell",
@@ -483,7 +540,6 @@ local POI = {
 		y = 0.122,
 		npc = true,
 		public = true,
-		usedBy = nil,
 	},	
 	["IF_C1"] = {
 		name = "Bei Steinklinge",
@@ -495,7 +551,6 @@ local POI = {
 		y = 0.073,
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_C2"] = {
 		name = "Reisender Angler",
@@ -507,7 +562,6 @@ local POI = {
 		y = 0.071,
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_C3"] = {
 		name = "---",
@@ -519,7 +573,6 @@ local POI = {
 		y = 0.068,
 		npc = true,
 		public = nil,
-		usedBy = "Erenea Kade",
 	},
 	["IF_C4"] = {
 		name = "---",
@@ -531,7 +584,6 @@ local POI = {
 		y = 0.068,
 		npc = true,
 		public = nil,
-		usedBy = "Garam Siedefaust & Luzula Schwarzgrund (Wohn- & Geschäftsräume)",
 	},
 	["IF_C5"] = {
 		name = "---",
@@ -543,7 +595,6 @@ local POI = {
 		y = 0.151,
 		npc = true,
 		public = nil,
-		usedBy = "Breogir",
 	},
 	["IF_D"] = {
 		name = "Die Halle der Forscher",
@@ -555,7 +606,6 @@ local POI = {
 		y = 0.258,
 		npc = true,
 		public = true,
-		usedBy = nil,
 	},	
 	["IF_D1"] = {
 		name = "Bibliothek",
@@ -567,7 +617,6 @@ local POI = {
 		y = 0.158,
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_D2"] = {
 		name = "---",
@@ -579,8 +628,6 @@ local POI = {
 		y = 0.356,
 		npc = nil,
 		public = nil,
-		usedBy = "GnomTEC Niederlassung Eisenschmiede|n(Effie Flammfix)",
-		GnomTEC = true,
 	},
 	["IF_D3"] = {
 		name = "---",
@@ -592,7 +639,6 @@ local POI = {
 		y = 0.250,
 		npc = nil,
 		public = nil,
-		usedBy = "Thelsamar (Laden)",
 	},
 	["IF_D4"] = {
 		name = "---",
@@ -604,7 +650,6 @@ local POI = {
 		y = 0.192,
 		npc = nil,
 		public = nil,
-		usedBy = "Thelsamar (Besprechungsraum)",
 	},
 	["IF_E"] = {
 		name = "Tüftlerstadt",
@@ -616,7 +661,6 @@ local POI = {
 		y = 0.499,
 		npc = true,
 		public = true,
-		usedBy = nil,
 	},	
 	["IF_E1"] = {
 		name = "---",
@@ -628,7 +672,6 @@ local POI = {
 		y = 0.479,
 		npc = nil,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_E2"] = {
 		name = "Sachen, die BUMM machen!",
@@ -640,7 +683,6 @@ local POI = {
 		y = 0.533,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_E3"] = {
 		name = "Brausefitz´ Tränke und Mischgetränke",
@@ -652,7 +694,6 @@ local POI = {
 		y = 0.547,
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_E4"] = {
 		name = "Gerätehandel Sprungspindel",
@@ -664,7 +705,6 @@ local POI = {
 		y = 0.435,
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_F"] = {
 		name = "Das Militärviertel",
@@ -676,7 +716,6 @@ local POI = {
 		y = 0.768,
 		npc = true,
 		public = true,
-		usedBy = nil,
 	},
 	["IF_F1"] = {
 		name = "Goldrauschs Jagdbedarf",
@@ -688,7 +727,6 @@ local POI = {
 		y = 0.670,
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_F2"] = {
 		name = "Bruuks Ecke",
@@ -700,7 +738,6 @@ local POI = {
 		y = 0.740,
 		npc = true,
 		public = nil,
-		usedBy = "Glofur Taverne",
 	},
 	["IF_F3"] = {
 		name = "Halle der Waffen",
@@ -712,7 +749,6 @@ local POI = {
 		y = 0.846,
 		npc = true,
 		public = nil,
-		usedBy = " Militär Eisenschmiede",
 	},
 	["IF_F4"] = {
 		name = "Schlachtholzwaffen",
@@ -724,7 +760,6 @@ local POI = {
 		y = 0.892,			
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},
 	["IF_F5"] = {
 		name = "---",
@@ -736,7 +771,6 @@ local POI = {
 		y = 0.913,
 		npc = nil,
 		public = nil,
-		usedBy = "Ballasch Donnerbart ",
 	},
 	["IF_F6"] = {
 		name = "Felshelms Platten und Ketten",
@@ -748,7 +782,6 @@ local POI = {
 		y = 0.885,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},	
 	["IF_F7"] = {
 		name = "---",
@@ -760,7 +793,6 @@ local POI = {
 		y = 0.661,
 		npc = nil,
 		public = nil,
-		usedBy = "Donnerbarts Donnerbüchsen",
 	},		
 	["IF_G"] = {
 		name = " Die große Schmiede",
@@ -772,7 +804,6 @@ local POI = {
 		y = 0.449,
 		npc = true,
 		public = true,
-		usedBy = nil,
 	},	
 	["IF_G1"] = {
 		name = "Botschaft der Dunkeleisen Zwerge",
@@ -784,7 +815,6 @@ local POI = {
 		y = 0.458,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},		
 	["IF_G2"] = {
 		name = "---",
@@ -796,7 +826,6 @@ local POI = {
 		y = 0.321,	
 		npc = nil,
 		public = nil,
-		usedBy = "Baccùs Silberbarts",
 	},
 	["IF_G3"] = {
 		name = "Lederwaren Feinspindel",
@@ -808,7 +837,6 @@ local POI = {
 		y = 0.352,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},		
 	["IF_G4"] = {
 		name = "Tuchmacherei Steinbrauel",
@@ -820,7 +848,6 @@ local POI = {
 		y = 0.296,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},		
 	["IF_G5"] = {
 		name = "Bubriks Laden",
@@ -832,7 +859,6 @@ local POI = {
 		y = 0.278,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},		
 	["IF_G6"] = {
 		name = "Tiefenbergbaugilde",
@@ -844,7 +870,6 @@ local POI = {
 		y = 0.275,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},		
 	["IF_G7"] = {
 		name = "---",
@@ -856,7 +881,6 @@ local POI = {
 		y = 0.300,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},		
 	["IF_G8"] = {
 		name = "Zum Bronzekessel",
@@ -868,7 +892,6 @@ local POI = {
 		y = 0.376,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},		
 	["IF_G9"] = {
 		name = "Arkananien Distelflaum",
@@ -880,7 +903,6 @@ local POI = {
 		y = 0.450,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},		
 	["IF_G10"] = {
 		name = "---",
@@ -892,7 +914,6 @@ local POI = {
 		y = 0.497,	
 		npc = nil,
 		public = nil,
-		usedBy = "Zum brodelnden Kupferkessel",
 	},
 	["IF_G11"] = {
 		name = "---",
@@ -904,7 +925,6 @@ local POI = {
 		y = 0.543,	
 		npc = nil,
 		public = nil,
-		usedBy = "Graccas",
 	},
 	["IF_G12"] = {
 		name = "Heiler von Eisenschmiede",
@@ -916,7 +936,6 @@ local POI = {
 		y = 0.579,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},		
 	["IF_G13"] = {
 		name = "---",
@@ -928,7 +947,6 @@ local POI = {
 		y = 0.612,	
 		npc = nil,
 		public = nil,
-		usedBy = "Wachstube von Militär Eisenschmiede",
 	},
 	["IF_G14"] = {
 		name = "Der Hohe Sitz",
@@ -940,7 +958,6 @@ local POI = {
 		y = 0.523,	
 		npc = true,
 		public = nil,
-		usedBy = nil,
 	},		
 }
 
@@ -956,9 +973,10 @@ local Tourist = LibStub("LibTourist-3.0")
 
 LibStub("AceConfig-3.0"):RegisterOptionsTable("GnomTEC CityMaps Main", optionsMain)
 LibStub("AceConfig-3.0"):RegisterOptionsTable("GnomTEC CityMaps View", optionsView)
+LibStub("AceConfig-3.0"):RegisterOptionsTable("GnomTEC CityMaps Data", optionsData)
 LibStub("AceConfigDialog-3.0"):AddToBlizOptions("GnomTEC CityMaps Main", "GnomTEC CityMaps");
 panelConfiguration = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("GnomTEC CityMaps View", L["L_OPTIONS_VIEW"], "GnomTEC CityMaps");
-
+LibStub("AceConfigDialog-3.0"):AddToBlizOptions("GnomTEC CityMaps Data", L["L_OPTIONS_DATA"], "GnomTEC CityMaps");
 
 -- ----------------------------------------------------------------------
 -- Local functions
@@ -1062,8 +1080,8 @@ end
 
 -- function called when mouse enters the POI icon on map (attached in GnomTEC_CityMaps:ShowPOI())
 local function GnomTEC_CityMaps_POIFrame_OnEnter(self)
-	-- show tooltip
-	
+   local relam = GetRealmName();
+   
 	local id = string.gsub(self:GetName(),"GNOMTEC_CITYMAPS_FRAME_POI_","");
 	if (id and not lockedInfo) then
 		if (POI[id]) then
@@ -1105,7 +1123,7 @@ local function GnomTEC_CityMaps_POIFrame_OnEnter(self)
 			end
 			
 			if (GnomTEC_CityMaps_Options["ShowStaticData"]) then
-				usedByText = "|n|n|cFFFFFF80--- Genutzt von (statische Liste)---|r|n"..(POI[id].usedBy or "<frei>")
+				usedByText = "|n|n|cFFFFFF80--- Genutzt von (statische Liste)---|r|n"..(GnomTEC_CityMaps_UsedBy[GetRealmName()][id] or "<frei>")
 			end
 
 			GNOMTEC_CITYMAPS_FRAME_INFO_SCROLL_DESCRIPTION:SetText("|cFFFFFF80--- Engine ---|r|n"..POI[id].description..usedByText..mspText)
@@ -1188,7 +1206,7 @@ function GnomTEC_CityMaps:ShowPOI(id)
 			POITexture:SetTexture(CONST_POIICON_PUBLIC)
 		elseif (POI[id].GnomTEC and GnomTEC_CityMaps_Options["ShowStaticData"]) then
 			POITexture:SetTexture(CONST_POIICON_GNOMTEC)
-		elseif ((POI[id].usedBy and GnomTEC_CityMaps_Options["ShowStaticData"]) or (mspData and GnomTEC_CityMaps_Options["ShowMSPData"]))then		
+		elseif ((GnomTEC_CityMaps_UsedBy[GetRealmName()][id] and GnomTEC_CityMaps_Options["ShowStaticData"]) or (mspData and GnomTEC_CityMaps_Options["ShowMSPData"]))then		
 			if (POI[id].npc) then
 				POITexture:SetTexture(CONST_POIICON_USED_WITH_NPC)
 			else
@@ -1362,6 +1380,75 @@ function GnomTEC_CityMaps:OpenConfiguration()
 	-- sometimes first call lands not on desired panel
 	InterfaceOptionsFrame_OpenToCategory(panelConfiguration)
 end
+
+function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
+	local key, value
+	
+	-- clear all static usage information of the selected map
+	for key,value in pairs(POI) do
+		if ("Ironforge" == map) then
+			if (1 == string.find(key,"IF_(%a+)(%d+)")) then
+				GnomTEC_CityMaps_UsedBy[GetRealmName()][key] = nil;
+			end
+		end
+	end
+	
+	-- add static usage information of the selected map from text input
+	for key, value in string.gmatch(text or "", "(%w+_%w+)=([^%]]+)") do
+		if (POI[key]) then
+			if ("Ironforge" == map) then
+				if (1 == string.find(key,"IF_(%a+)(%d+)")) then
+					GnomTEC_CityMaps_UsedBy[GetRealmName()][key] = emptynil( string.gsub(value or "","||","|") )
+				end
+			end
+		end
+	end
+	
+	-- refresh POIs of the selected map
+
+	-- clear all static usage information of the selected map
+	for key,value in pairs(POI) do
+		if ("Ironforge" == map) then
+			if (1 == string.find(key,"IF_(%a+)(%d+)")) then
+				GnomTEC_CityMaps:ShowPOI(key)
+			end
+		end
+	end
+	
+
+end
+
+local function sortPOInameFunction(a, b)
+	local aArea = string.match(a,"(%a+_%a+)")
+	local bArea = string.match(b,"(%a+_%a+)")
+	local aNumber = tonumber(string.match(a,"(%d+)"))
+	local bNumber = tonumber(string.match(b,"(%d+)"))
+	
+	return (aArea < bArea) or ((aArea == bArea) and (aNumber < bNumber))
+end
+
+function GnomTEC_CityMaps:ExportStaticData(realm,map)
+	local exportList = {}
+	local exportData = ""
+	local key, value
+
+	-- search for data to export
+	for key,value in pairs(POI) do
+		if ("Ironforge" == map) then
+			if (1 == string.find(key,"IF_(%a+)(%d+)")) then
+				table.insert(exportList,key)
+			end
+		end
+	end
+	
+	-- Create export string
+	table.sort(exportList, sortPOInameFunction)
+	for key,value in pairs(exportList) do
+		exportData = exportData.."["..value.."="..string.gsub(GnomTEC_CityMaps_UsedBy[GetRealmName()][value] or "","|","||").."]|n"
+	end
+	return exportData
+end
+
 -- ----------------------------------------------------------------------
 -- Frame event handler and functions
 -- ----------------------------------------------------------------------
@@ -1419,6 +1506,11 @@ function GnomTEC_CityMaps:OnEnable()
 	end
 		
 	-- set local parameters
+	
+	-- initialize global data which yet is empty
+	if not GnomTEC_CityMaps_UsedBy[GetRealmName()] then GnomTEC_CityMaps_UsedBy[GetRealmName()] = {} end
+
+	-- initialize map
 	GnomTEC_CityMaps:SetMap(self.db.char.displayedMap)
 	
 	-- initialize hooks and events
