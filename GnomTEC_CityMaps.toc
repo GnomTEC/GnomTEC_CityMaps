@@ -2,7 +2,7 @@
 ## Title: GnomTEC_CityMaps
 ## Notes: Interaktive Stadtkarten
 ## Author: GnomTEC
-## Version: 5.3.0.8
+## Version: 5.3.0.9
 ## SavedVariablesPerCharacter: GnomTEC_CityMaps_Options
 ## SavedVariables: GnomTEC_CityMapsDB, GnomTEC_CityMaps_Flags, GnomTEC_CityMaps_UsedBy
 

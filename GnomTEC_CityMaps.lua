@@ -1,6 +1,6 @@
 -- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 5.3.0.8
+-- Version: 5.3.0.9
 -- Author: GnomTEC
 -- Copyright 2012-2013 by GnomTEC
 -- http://www.gnomtec.de/
@@ -85,6 +85,8 @@ GnomTEC_CityMaps_UsedBy = {
 GnomTEC_CityMaps_Options = {
 	["ShowStaticData"] = true,
 	["ShowMSPData"] = true,
+	["ShowPOILabel"] = false,
+	
 }
 
 -- ----------------------------------------------------------------------
@@ -179,6 +181,15 @@ local optionsView = {
 			width = 'full',
 			order = 2
 		},
+		cityMapsOptionShowPOILabel = {
+			type = "toggle",
+			name = L["L_OPTIONS_VIEW_SHOWPOILABEL"],
+			desc = "",
+			set = function(info,val) GnomTEC_CityMaps_Options["ShowPOILabel"] = val;GnomTEC_CityMaps:SetMap(GnomTEC_CityMaps.db.char.displayedMap) end,
+	   	get = function(info) return GnomTEC_CityMaps_Options["ShowPOILabel"] end,
+			width = 'full',
+			order = 3
+		},
 	},
 }
 
@@ -203,23 +214,23 @@ local optionsData = {
 
 -- maps which are supported by addon
 local availableMaps = {
---	["Stormwind City"] = {
---		text = "Sturmwind",
---		notCheckable = 1,
---		func = function () GnomTEC_CityMaps:SetMap("Stormwind City"); end,	
---		map1 = "Interface\\WorldMap\\StormwindCity\\StormwindCity1",
---		map2 = "Interface\\WorldMap\\StormwindCity\\StormwindCity2",
---		map3 = "Interface\\WorldMap\\StormwindCity\\StormwindCity3",
---		map4 = "Interface\\WorldMap\\StormwindCity\\StormwindCity4",
---		map5 = "Interface\\WorldMap\\StormwindCity\\StormwindCity5",
---		map6 = "Interface\\WorldMap\\StormwindCity\\StormwindCity6",
---		map7 = "Interface\\WorldMap\\StormwindCity\\StormwindCity7",
---		map8 = "Interface\\WorldMap\\StormwindCity\\StormwindCity8",
---		map9 = "Interface\\WorldMap\\StormwindCity\\StormwindCity9",
---		map10 = "Interface\\WorldMap\\StormwindCity\\StormwindCity10",
---		map11 = "Interface\\WorldMap\\StormwindCity\\StormwindCity11",
---		map12 = "Interface\\WorldMap\\StormwindCity\\StormwindCity12"
---	},
+	["Stormwind City"] = {
+		text = "Sturmwind",
+		notCheckable = 1,
+		func = function () GnomTEC_CityMaps:SetMap("Stormwind City"); end,	
+		map1 = "Interface\\WorldMap\\StormwindCity\\StormwindCity1",
+		map2 = "Interface\\WorldMap\\StormwindCity\\StormwindCity2",
+		map3 = "Interface\\WorldMap\\StormwindCity\\StormwindCity3",
+		map4 = "Interface\\WorldMap\\StormwindCity\\StormwindCity4",
+		map5 = "Interface\\WorldMap\\StormwindCity\\StormwindCity5",
+		map6 = "Interface\\WorldMap\\StormwindCity\\StormwindCity6",
+		map7 = "Interface\\WorldMap\\StormwindCity\\StormwindCity7",
+		map8 = "Interface\\WorldMap\\StormwindCity\\StormwindCity8",
+		map9 = "Interface\\WorldMap\\StormwindCity\\StormwindCity9",
+		map10 = "Interface\\WorldMap\\StormwindCity\\StormwindCity10",
+		map11 = "Interface\\WorldMap\\StormwindCity\\StormwindCity11",
+		map12 = "Interface\\WorldMap\\StormwindCity\\StormwindCity12"
+	},
 	["Ironforge"] = {
 		text = "Eisenschmiede",
 		notCheckable = 1,
@@ -1192,6 +1203,11 @@ function GnomTEC_CityMaps:ShowPOI(id)
 			POITexture:SetAllPoints(POIFrame);
 			POIFrame.texture = POITexture;			
 			POIFrame:SetAlpha(1.0); 
+			local POILabel = POIFrame:CreateFontString();
+			POILabel:SetPoint("CENTER", POIFrame, "CENTER", 0, 0)
+			POILabel:SetFontObject(GameFontHighlightSmall)
+			POILabel:SetText(POI[id].localId)
+			POIFrame.label = POILabel
 		end
 
 		local mspData = false
@@ -1205,24 +1221,40 @@ function GnomTEC_CityMaps:ShowPOI(id)
 		end	
 
 		local POITexture = POIFrame.texture
+		local POILabel = POIFrame.label
+		
 		if (POI[id].public) then
 			POITexture:SetTexture(CONST_POIICON_PUBLIC)
+			POILabel:SetText("|cFF0000FF"..POI[id].localId.."|r")
 		elseif (POI[id].GnomTEC and GnomTEC_CityMaps_Options["ShowStaticData"]) then
 			POITexture:SetTexture(CONST_POIICON_GNOMTEC)
+			POILabel:SetText("|cFFFF00FF"..POI[id].localId.."|r")
 		elseif ((GnomTEC_CityMaps_UsedBy[GetRealmName()][id] and GnomTEC_CityMaps_Options["ShowStaticData"]) or (mspData and GnomTEC_CityMaps_Options["ShowMSPData"]))then		
 			if (POI[id].npc) then
 				POITexture:SetTexture(CONST_POIICON_USED_WITH_NPC)
+				POILabel:SetText("|cFFFF0000"..POI[id].localId.."|r")
 			else
-				POITexture:SetTexture(CONST_POIICON_USED)				
+				POITexture:SetTexture(CONST_POIICON_USED)	
+				POILabel:SetText("|cFFFF0000"..POI[id].localId.."|r")			
 			end
 		else
 			if (POI[id].npc) then
 				POITexture:SetTexture(CONST_POIICON_FREE_WITH_NPC)
+				POILabel:SetText("|cFF00FF00"..POI[id].localId.."|r")
 			else
-				POITexture:SetTexture(CONST_POIICON_FREE)				
+				POITexture:SetTexture(CONST_POIICON_FREE)
+				POILabel:SetText("|cFF00FF00"..POI[id].localId.."|r")			
 			end
 		end					
 		POIFrame:SetPoint("CENTER",GNOMTEC_CITYMAPS_FRAME,"TOPLEFT", x, y)
+		
+		if (GnomTEC_CityMaps_Options["ShowPOILabel"]) then
+			POITexture:Hide()
+			POILabel:Show()
+		else
+			POITexture:Show()
+			POILabel:Hide()
+		end
 		POIFrame:Show();		
 	end			
 end
