@@ -1,6 +1,6 @@
 ﻿-- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 5.4.2.12
+-- Version: 5.4.2.13
 -- Author: GnomTEC
 -- Copyright 2012-2013 by GnomTEC
 -- http://www.gnomtec.de/
@@ -17,8 +17,29 @@ GnomTEC_CityMaps_Flags = {
 	},
 }
 
--- static data (initialized with "Die Aldor" demo data
-GnomTEC_CityMaps_UsedBy = {
+-- static data
+GnomTEC_CityMaps_UsedBy = {}
+
+GnomTEC_CityMaps_Options = {
+	["ShowStaticData"] = true,
+	["ShowMSPData"] = true,
+	["ShowPOILabel"] = false,
+	
+}
+
+-- ----------------------------------------------------------------------
+-- Addon global Constants (local)
+-- ----------------------------------------------------------------------
+
+local CONST_POIICON_FREE = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_FREE"
+local CONST_POIICON_FREE_WITH_NPC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_FREE_WITH_NPC"
+local CONST_POIICON_USED = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_USED"
+local CONST_POIICON_USED_WITH_NPC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_USED_WITH_NPC"
+local CONST_POIICON_PUBLIC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_PUBLIC"
+local CONST_POIICON_GNOMTEC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_GNOMTEC"
+
+-- default static data (initialized with "Die Aldor" demo data)
+local CONST_USEDBY_DEFAULT = {
 	["Die Aldor"] = {
 		["IF_A1"]="Girmodan",
 		["IF_A2"]=nil,
@@ -80,26 +101,6 @@ GnomTEC_CityMaps_UsedBy = {
 		["IF_G14"]=nil,
 	},
 }
-
-
-GnomTEC_CityMaps_Options = {
-	["ShowStaticData"] = true,
-	["ShowMSPData"] = true,
-	["ShowPOILabel"] = false,
-	
-}
-
--- ----------------------------------------------------------------------
--- Addon global Constants (local)
--- ----------------------------------------------------------------------
-
-local CONST_POIICON_FREE = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_FREE"
-local CONST_POIICON_FREE_WITH_NPC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_FREE_WITH_NPC"
-local CONST_POIICON_USED = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_USED"
-local CONST_POIICON_USED_WITH_NPC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_USED_WITH_NPC"
-local CONST_POIICON_PUBLIC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_PUBLIC"
-local CONST_POIICON_GNOMTEC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_GNOMTEC"
-
 -- ----------------------------------------------------------------------
 -- Addon global variables (local)
 -- ----------------------------------------------------------------------
@@ -197,25 +198,65 @@ local optionsData = {
 	name = L["L_OPTIONS_DATA"].." (Realm: "..GetRealmName()..")",
 	type = 'group',
 	args = {
+		cityMapsOptionDataIronforgeDefault = {
+			type = "toggle",
+			name = L["L_OPTIONS_DATA_IRONFORGE_DEFAULT"],
+			desc = "",
+			set = function(info,val) GnomTEC_CityMaps:SetStaticDataIsDefault(GetRealmName(),"Ironforge",val) end,
+	   	get = function(info) return GnomTEC_CityMaps:GetStaticDataIsDefault(GetRealmName(),"Ironforge") end,
+			width = 'full',
+			order = 1
+		},		
 		CityMapsOptionDataIronforge = {
 			type = "input",
 			name = L["L_OPTIONS_DATA_IRONFORGE"],
 			desc = "",
-			set = function(info,val) GnomTEC_CityMaps:ImportStaticData(GetRealmName(),"Ironforge",val); GnomTEC_Badge:SetMSP() end,
+			disabled = function(info) return GnomTEC_CityMaps:GetStaticDataIsDefault(GetRealmName(),"Ironforge") end,
+			set = function(info,val) GnomTEC_CityMaps:ImportStaticData(GetRealmName(),"Ironforge",val) end,
     		get = function(info) return GnomTEC_CityMaps:ExportStaticData(GetRealmName(),"Ironforge") end,
 			multiline = 10,
 			width = 'full',
-			order = 1
+			order = 2
 		},
+		cityMapsOptionDataStormwindDefault = {
+			type = "toggle",
+			name = L["L_OPTIONS_DATA_STORMWIND_DEFAULT"],
+			desc = "",
+			set = function(info,val) GnomTEC_CityMaps:SetStaticDataIsDefault(GetRealmName(),"Stormwind",val) end,
+	   	get = function(info) return GnomTEC_CityMaps:GetStaticDataIsDefault(GetRealmName(),"Stormwind") end,
+			width = 'full',
+			order = 3
+		},		
 		CityMapsOptionDataStormwind = {
 			type = "input",
 			name = L["L_OPTIONS_DATA_STORMWIND"],
 			desc = "",
-			set = function(info,val) GnomTEC_CityMaps:ImportStaticData(GetRealmName(),"Stormwind",val); GnomTEC_Badge:SetMSP() end,
+			disabled = function(info) return GnomTEC_CityMaps:GetStaticDataIsDefault(GetRealmName(),"Stormwind") end,
+			set = function(info,val) GnomTEC_CityMaps:ImportStaticData(GetRealmName(),"Stormwind",val) end,
     		get = function(info) return GnomTEC_CityMaps:ExportStaticData(GetRealmName(),"Stormwind") end,
 			multiline = 10,
 			width = 'full',
-			order = 1
+			order = 4
+		},
+		cityMapsOptionDataDarnassusDefault = {
+			type = "toggle",
+			name = L["L_OPTIONS_DATA_DARNASSUS_DEFAULT"],
+			desc = "",
+			set = function(info,val) GnomTEC_CityMaps:SetStaticDataIsDefault(GetRealmName(),"Darnassus",val) end,
+	   	get = function(info) return GnomTEC_CityMaps:GetStaticDataIsDefault(GetRealmName(),"Darnassus") end,
+			width = 'full',
+			order = 5
+		},		
+		CityMapsOptionDataDarnassus = {
+			type = "input",
+			name = L["L_OPTIONS_DATA_DARNASSUS"],
+			desc = "",
+			disabled = function(info) return GnomTEC_CityMaps:GetStaticDataIsDefault(GetRealmName(),"Darnassus") end,
+			set = function(info,val) GnomTEC_CityMaps:ImportStaticData(GetRealmName(),"Darnassus",val) end,
+    		get = function(info) return GnomTEC_CityMaps:ExportStaticData(GetRealmName(),"Darnassus") end,
+			multiline = 10,
+			width = 'full',
+			order = 6
 		},
 	},
 }
@@ -225,7 +266,7 @@ local optionsData = {
 -- maps which are supported by addon
 local availableMaps = {
 	["Ironforge"] = {
-		text = "Eisenschmiede",
+		text = L["L_IRONFORGE"],
 		notCheckable = 1,
 		func = function () GnomTEC_CityMaps:SetMap("Ironforge"); end,
 		map1 = "Interface\\WorldMap\\Ironforge\\Ironforge1",
@@ -242,7 +283,7 @@ local availableMaps = {
 		map12 = "Interface\\WorldMap\\Ironforge\\Ironforge12"
 	},	
 	["Stormwind City"] = {
-		text = "Sturmwind",
+		text = L["L_STORMWIND"],
 		notCheckable = 1,
 		func = function () GnomTEC_CityMaps:SetMap("Stormwind City"); end,	
 		map1 = "Interface\\WorldMap\\StormwindCity\\StormwindCity1",
@@ -259,7 +300,7 @@ local availableMaps = {
 		map12 = "Interface\\WorldMap\\StormwindCity\\StormwindCity12"
 	},
 	["Darnassus"] = {
-		text = "Darnassus",
+		text = L["L_DARNASSUS"],
 		notCheckable = 1,
 		func = function () GnomTEC_CityMaps:SetMap("Darnassus"); end,	
 		map1 = "Interface\\WorldMap\\Darnassus\\Darnassus1",
@@ -1723,6 +1764,28 @@ local POI = {
 		npc = true,
 		public = true,
 	},	
+	["SW_G2"] = {
+		name = L["L_SW_G2_NAME"],
+		description = L["L_SW_G2_DESC"],
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "G2",
+		zone = "Stormwind City",
+		x = 0.295,
+		y = 0.475,		
+		npc = nil,
+		public = nil,
+	},	
+	["SW_G1"] = {
+		name = L["L_SW_G1_NAME"],
+		description = L["L_SW_G1_DESC"],
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "G1",
+		zone = "Stormwind City",
+		x = 0.304,
+		y = 0.291,		
+		npc = nil,
+		public = nil,
+	},	
 	["SW_H"] = {
 		name = L["L_SW_H_NAME"],
 		description = L["L_SW_H_DESC"],
@@ -2912,20 +2975,119 @@ function GnomTEC_CityMaps:OpenConfiguration()
 	InterfaceOptionsFrame_OpenToCategory(panelConfiguration)
 end
 
+function GnomTEC_CityMaps:SetStaticDataIsDefault(realm, map, isDefault)
+	if (not GnomTEC_CityMaps_UsedBy[realm]) then GnomTEC_CityMaps_UsedBy[realm] = {} end
+
+	if ("Ironforge" == map) then
+		GnomTEC_CityMaps_UsedBy[realm]["IF_ISDEFAULT"] = isDefault;
+	elseif ("Stormwind" == map) then
+		GnomTEC_CityMaps_UsedBy[realm]["SW_ISDEFAULT"] = isDefault;
+	elseif ("Darnassus" == map) then
+		GnomTEC_CityMaps_UsedBy[realm]["DN_ISDEFAULT"] = isDefault;
+	end
+	
+	-- set static data to default values if selected so
+	if (isDefault) then
+		-- clear all static usage information of the selected map
+		for key,value in pairs(POI) do
+			if ("Ironforge" == map) then
+				if (1 == string.find(key,"IF_(%a+)(%d+)")) then
+					GnomTEC_CityMaps_UsedBy[realm][key] = nil;
+				end
+			elseif ("Stormwind" == map) then
+				if (1 == string.find(key,"SW_(%a+)(%d+)")) then
+					GnomTEC_CityMaps_UsedBy[realm][key] = nil;
+				end
+			elseif ("Darnassus" == map) then
+				if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+					GnomTEC_CityMaps_UsedBy[realm][key] = nil;
+				end
+			end
+		end	
+
+		-- add static usage information of the selected map from default data
+		if (not CONST_USEDBY_DEFAULT[realm]) then CONST_USEDBY_DEFAULT[realm] = {} end
+		for key, value in pairs(POI) do
+			if (POI[key]) then
+				if ("Ironforge" == map) then
+					if (1 == string.find(key,"IF_(%a+)(%d+)")) then
+						GnomTEC_CityMaps_UsedBy[realm][key] = CONST_USEDBY_DEFAULT[realm][key]
+					end
+				elseif ("Stormwind" == map) then
+					if (1 == string.find(key,"SW_(%a+)(%d+)")) then
+						GnomTEC_CityMaps_UsedBy[realm][key] = CONST_USEDBY_DEFAULT[realm][key]
+					end
+				elseif ("Darnassus" == map) then
+					if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+						GnomTEC_CityMaps_UsedBy[realm][key] = CONST_USEDBY_DEFAULT[realm][key]
+					end
+				end
+			end
+		end
+	
+		-- refresh POIs of the selected map
+
+		-- update all static usage information of the selected map
+		for key,value in pairs(POI) do
+			if ("Ironforge" == map) then
+				if (1 == string.find(key,"IF_(%a+)(%d+)")) then
+					GnomTEC_CityMaps:ShowPOI(key)
+				end
+			elseif ("Stormwind" == map) then
+				if (1 == string.find(key,"SW_(%a+)(%d+)")) then
+					GnomTEC_CityMaps:ShowPOI(key)
+				end
+			elseif ("Darnassus" == map) then
+				if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+					GnomTEC_CityMaps:ShowPOI(key)
+				end
+			end
+		end
+		
+	end
+end
+
+function GnomTEC_CityMaps:GetStaticDataIsDefault(realm, map)
+	if (not GnomTEC_CityMaps_UsedBy[realm]) then GnomTEC_CityMaps_UsedBy[realm] = {} end
+
+	if ("Ironforge" == map) then
+		return GnomTEC_CityMaps_UsedBy[realm]["IF_ISDEFAULT"]
+	elseif ("Stormwind" == map) then
+		return GnomTEC_CityMaps_UsedBy[realm]["SW_ISDEFAULT"]
+	elseif ("Darnassus" == map) then
+		return GnomTEC_CityMaps_UsedBy[realm]["DN_ISDEFAULT"]
+	end
+	
+	return false
+end
+
 function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 	local key, value
+
+	if (not GnomTEC_CityMaps_UsedBy[realm]) then GnomTEC_CityMaps_UsedBy[realm] = {} end
 	
 	-- clear all static usage information of the selected map
 	for key,value in pairs(POI) do
 		if ("Ironforge" == map) then
 			if (1 == string.find(key,"IF_(%a+)(%d+)")) then
-				GnomTEC_CityMaps_UsedBy[GetRealmName()][key] = nil;
+				GnomTEC_CityMaps_UsedBy[realm][key] = nil;
 			end
 		elseif ("Stormwind" == map) then
 			if (1 == string.find(key,"SW_(%a+)(%d+)")) then
-				GnomTEC_CityMaps_UsedBy[GetRealmName()][key] = nil;
+				GnomTEC_CityMaps_UsedBy[realm][key] = nil;
+			end
+		elseif ("Darnassus" == map) then
+			if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+				GnomTEC_CityMaps_UsedBy[realm][key] = nil;
 			end
 		end
+	end
+	if ("Ironforge" == map) then
+		GnomTEC_CityMaps_UsedBy[realm]["IF_ISDEFAULT"] = false;
+	elseif ("Stormwind" == map) then
+		GnomTEC_CityMaps_UsedBy[realm]["SW_ISDEFAULT"] = false;
+	elseif ("Darnassus" == map) then
+		GnomTEC_CityMaps_UsedBy[realm]["DN_ISDEFAULT"] = false;
 	end
 	
 	-- add static usage information of the selected map from text input
@@ -2933,11 +3095,15 @@ function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 		if (POI[key]) then
 			if ("Ironforge" == map) then
 				if (1 == string.find(key,"IF_(%a+)(%d+)")) then
-					GnomTEC_CityMaps_UsedBy[GetRealmName()][key] = emptynil( string.gsub(value or "","||","|") )
+					GnomTEC_CityMaps_UsedBy[realm][key] = emptynil( string.gsub(value or "","||","|") )
 				end
 			elseif ("Stormwind" == map) then
 				if (1 == string.find(key,"SW_(%a+)(%d+)")) then
-					GnomTEC_CityMaps_UsedBy[GetRealmName()][key] = emptynil( string.gsub(value or "","||","|") )
+					GnomTEC_CityMaps_UsedBy[realm][key] = emptynil( string.gsub(value or "","||","|") )
+				end
+			elseif ("Darnassus" == map) then
+				if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+					GnomTEC_CityMaps_UsedBy[realm][key] = emptynil( string.gsub(value or "","||","|") )
 				end
 			end
 		end
@@ -2945,7 +3111,7 @@ function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 	
 	-- refresh POIs of the selected map
 
-	-- clear all static usage information of the selected map
+	-- update all static usage information of the selected map
 	for key,value in pairs(POI) do
 		if ("Ironforge" == map) then
 			if (1 == string.find(key,"IF_(%a+)(%d+)")) then
@@ -2955,10 +3121,13 @@ function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 			if (1 == string.find(key,"SW_(%a+)(%d+)")) then
 				GnomTEC_CityMaps:ShowPOI(key)
 			end
+		elseif ("Darnassus" == map) then
+			if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+				GnomTEC_CityMaps:ShowPOI(key)
+			end
 		end
 	end
 	
-
 end
 
 local function sortPOInameFunction(a, b)
@@ -2975,6 +3144,8 @@ function GnomTEC_CityMaps:ExportStaticData(realm,map)
 	local exportData = ""
 	local key, value
 
+	if (not GnomTEC_CityMaps_UsedBy[realm]) then GnomTEC_CityMaps_UsedBy[realm] = {} end
+
 	-- search for data to export
 	for key,value in pairs(POI) do
 		if ("Ironforge" == map) then
@@ -2985,13 +3156,17 @@ function GnomTEC_CityMaps:ExportStaticData(realm,map)
 			if (1 == string.find(key,"SW_(%a+)(%d+)")) then
 				table.insert(exportList,key)
 			end
+		elseif ("Darnassus" == map) then
+			if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+				table.insert(exportList,key)
+			end
 		end
 	end
 	
 	-- Create export string
 	table.sort(exportList, sortPOInameFunction)
 	for key,value in pairs(exportList) do
-		exportData = exportData.."["..value.."="..string.gsub(GnomTEC_CityMaps_UsedBy[GetRealmName()][value] or "","|","||").."]|n"
+		exportData = exportData.."["..value.."="..string.gsub(GnomTEC_CityMaps_UsedBy[realm][value] or "","|","||").."]|n"
 	end
 	return exportData
 end
@@ -3044,6 +3219,7 @@ end
 -- function called on enable of addon
 function GnomTEC_CityMaps:OnEnable()
     -- Called when the addon is enabled
+	local realm = GetRealmName()
 
 	GnomTEC_CityMaps:Print("GnomTEC_CityMaps Enabled")
 
@@ -3055,11 +3231,21 @@ function GnomTEC_CityMaps:OnEnable()
 	-- set local parameters
 	
 	-- initialize global data which yet is empty
-	if not GnomTEC_CityMaps_UsedBy[GetRealmName()] then GnomTEC_CityMaps_UsedBy[GetRealmName()] = {} end
-
+	if not GnomTEC_CityMaps_UsedBy[realm] then
+		GnomTEC_CityMaps_UsedBy[realm] = {}
+		GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Ironforge", true)
+		GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Stormwind", true)
+		GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Darnassus", true)		
+	end
+	
 	-- initialize map
 	GnomTEC_CityMaps:SetMap(self.db.char.displayedMap)
-	
+
+	-- update static data with defaults	when defaults are used
+	GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Ironforge", GnomTEC_CityMaps:GetStaticDataIsDefault(realm, "Ironforge"))
+	GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Stormwind", GnomTEC_CityMaps:GetStaticDataIsDefault(realm, "Stormwind"))
+	GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Darnassus", GnomTEC_CityMaps:GetStaticDataIsDefault(realm, "Darnassus"))
+		
 	-- initialize hooks and events
 	table.insert( msp_GnomTEC.callback.received, GnomTEC_CityMaps_MSPcallback )
 
@@ -3067,7 +3253,6 @@ function GnomTEC_CityMaps:OnEnable()
 	GNOMTEC_CITYMAPS_FRAME_INFO_CloseButton:HookScript("OnClick",GNOMTEC_CITYMAPS_FRAME_INFO_CloseButton_OnClick);
 	
 	-- setup POI data base with informations from MSP flags
-	local realm = GetRealmName()
 	if GnomTEC_CityMaps_Flags[realm] then
 		local key, value
 		for key,value in pairs(GnomTEC_CityMaps_Flags[realm]) do

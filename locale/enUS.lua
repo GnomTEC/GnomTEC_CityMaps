@@ -9,8 +9,16 @@ L["L_OPTIONS_VIEW_SHOWSTATICDATA"] = "Use internal, static data for display of b
 L["L_OPTIONS_VIEW_SHOWMSPDATA"] = "Use data from rp flags for display of building usage"
 L["L_OPTIONS_VIEW_SHOWPOILABEL"] ="Show POI labels instead of icons"
 L["L_OPTIONS_DATA"] = "Management of static data of building usage"
+L["L_OPTIONS_DATA_IRONFORGE_DEFAULT"] = "Use default data deliverd whith the addon for Ironforge"
 L["L_OPTIONS_DATA_IRONFORGE"] ="Data for Ironforge"
+L["L_OPTIONS_DATA_STORMWIND_DEFAULT"] = "Use default data deliverd whith the addon for Stormwind"
 L["L_OPTIONS_DATA_STORMWIND"] ="Data for Stormwind"
+L["L_OPTIONS_DATA_DARNASSUS_DEFAULT"] = "Use default data deliverd whith the addon for Darnassus"
+L["L_OPTIONS_DATA_DARNASSUS"] ="Data for Darnassus"
+
+L["L_IRONFORGE"] = "Ironforge"
+L["L_STORMWIND"] = "Stormwind"
+L["L_DARNASSUS"] = "Darnassus"
 
 L["L_IF_A_NAME"] = "Das Bankenviertel"
 L["L_IF_A_DESC"] = "Öffentlicher Platz"
@@ -286,7 +294,12 @@ L["L_SW_F_NAME"] = "Die Alte Kaserne"
 L["L_SW_F_DESC"] = "Zerstörtes Stadtviertel"
 
 L["L_SW_G_NAME"] = "Hafen"
-L["L_SW_G_DESC"] = "Haven"
+L["L_SW_G_DESC"] = "Hafen"
+L["L_SW_G1_NAME"] = "Zelt"
+L["L_SW_G1_DESC"] = "Zelt mit Theke davor. Tisch, Bierfass und Verksufswägen außenrum. "
+L["L_SW_G2_NAME"] = "Zelt"
+L["L_SW_G2_DESC"] = "Zelt mit Theke davor. Tisch, Fässer und Verksufswagen außenrum."
+
 
 L["L_SW_H_NAME"] = "Friedhof"
 L["L_SW_H_DESC"] = "Friedhof"

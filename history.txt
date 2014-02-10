@@ -1,6 +1,13 @@
 GnomTEC CityMaps Addon - Change History 
 ==============================
 
+5.4.2.13 (2013-12-24)
+============
+- Added import/export for Darnassus POIs
+- Added two POIs for tents in Stormwind Harbor
+- Added options to select between default or imported static data.
+- Default static data could be now updated with every new addon version
+
 5.4.2.12 (2013-12-14)
 ============
 - Updated Ace3 libraries to version r1104
