@@ -1,6 +1,6 @@
 -- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 5.3.0.9
+-- Version: 5.4.0.11
 -- Author: GnomTEC
 -- Copyright 2012-2013 by GnomTEC
 -- http://www.gnomtec.de/
@@ -17,7 +17,7 @@ GnomTEC_CityMaps_Flags = {
 	},
 }
 
--- static data (initialized with "Die ALdor" demo data
+-- static data (initialized with "Die Aldor" demo data
 GnomTEC_CityMaps_UsedBy = {
 	["Die Aldor"] = {
 		["IF_A1"]="Girmodan",
@@ -33,13 +33,13 @@ GnomTEC_CityMaps_UsedBy = {
 		["IF_A11"]=nil,
 		["IF_A12"]=nil,
 		["IF_A13"]=nil,
-		["IF_A14"]="Silberbart's Kuriositäten",
+		["IF_A14"]="Brabrax Erzblut",
 		["IF_A15"]="Arom Goldbart",
 		["IF_B1"]="Söldnerbund Dämmersturm",
 		["IF_B2"]="Handelsbund von Diarmai (völkergemischt)/ Strumhämmer",
 		["IF_B3"]=nil,
 		["IF_B4"]=nil,
-		["IF_B5"]=nil,
+		["IF_B5"]="Bartrand Stahlhammer",
 		["IF_B6"]="Togas",
 		["IF_B7"]=nil,
 		["IF_B8"]="Nioni Silberstößel & Gamblin (WG)",
@@ -51,26 +51,26 @@ GnomTEC_CityMaps_UsedBy = {
 		["IF_C5"]="Breogir",
 		["IF_D1"]=nil,
 		["IF_D2"]="GnomTEC Niederlassung Eisenschmiede|n(Effie Flammfix)",
-		["IF_D3"]="Thelsamar (Laden)",
-		["IF_D4"]="Thelsamar (Besprechungsraum)",
+		["IF_D3"]="Brizzle",
+		["IF_D4"]="Zum verdroschen Orc (Graccas)",
 		["IF_E1"]=nil,
 		["IF_E2"]=nil,
 		["IF_E3"]=nil,
 		["IF_E4"]=nil,
 		["IF_F1"]=nil,
-		["IF_F2"]="Glofur Taverne",
+		["IF_F2"]="Pension",
 		["IF_F3"]=" Militär Eisenschmiede",
 		["IF_F4"]=nil,
-		["IF_F5"]="Ballasch Donnerbart ",
+		["IF_F5"]="Ballasch Donnerbart",
 		["IF_F6"]=nil,
 		["IF_F7"]="Donnerbarts Donnerbüchsen",
 		["IF_G1"]=nil,
-		["IF_G2"]="Baccùs Silberbarts",
+		["IF_G2"]=nil,
 		["IF_G3"]=nil,
 		["IF_G4"]=nil,
 		["IF_G5"]=nil,
 		["IF_G6"]=nil,
-		["IF_G7"]=nil,
+		["IF_G7"]="Lorimbur Stahlhammer",
 		["IF_G8"]=nil,
 		["IF_G9"]=nil,
 		["IF_G10"]="Zum brodelnden Kupferkessel",
@@ -207,6 +207,16 @@ local optionsData = {
 			width = 'full',
 			order = 1
 		},
+		CityMapsOptionDataStormwind = {
+			type = "input",
+			name = L["L_OPTIONS_DATA_STORMWIND"],
+			desc = "",
+			set = function(info,val) GnomTEC_CityMaps:ImportStaticData(GetRealmName(),"Stormwind",val); GnomTEC_Badge:SetMSP() end,
+    		get = function(info) return GnomTEC_CityMaps:ExportStaticData(GetRealmName(),"Stormwind") end,
+			multiline = 10,
+			width = 'full',
+			order = 1
+		},
 	},
 }
 
@@ -214,23 +224,6 @@ local optionsData = {
 
 -- maps which are supported by addon
 local availableMaps = {
-	["Stormwind City"] = {
-		text = "Sturmwind",
-		notCheckable = 1,
-		func = function () GnomTEC_CityMaps:SetMap("Stormwind City"); end,	
-		map1 = "Interface\\WorldMap\\StormwindCity\\StormwindCity1",
-		map2 = "Interface\\WorldMap\\StormwindCity\\StormwindCity2",
-		map3 = "Interface\\WorldMap\\StormwindCity\\StormwindCity3",
-		map4 = "Interface\\WorldMap\\StormwindCity\\StormwindCity4",
-		map5 = "Interface\\WorldMap\\StormwindCity\\StormwindCity5",
-		map6 = "Interface\\WorldMap\\StormwindCity\\StormwindCity6",
-		map7 = "Interface\\WorldMap\\StormwindCity\\StormwindCity7",
-		map8 = "Interface\\WorldMap\\StormwindCity\\StormwindCity8",
-		map9 = "Interface\\WorldMap\\StormwindCity\\StormwindCity9",
-		map10 = "Interface\\WorldMap\\StormwindCity\\StormwindCity10",
-		map11 = "Interface\\WorldMap\\StormwindCity\\StormwindCity11",
-		map12 = "Interface\\WorldMap\\StormwindCity\\StormwindCity12"
-	},
 	["Ironforge"] = {
 		text = "Eisenschmiede",
 		notCheckable = 1,
@@ -248,6 +241,23 @@ local availableMaps = {
 		map11 = "Interface\\WorldMap\\Ironforge\\Ironforge11",
 		map12 = "Interface\\WorldMap\\Ironforge\\Ironforge12"
 	},	
+	["Stormwind City"] = {
+		text = "Sturmwind",
+		notCheckable = 1,
+		func = function () GnomTEC_CityMaps:SetMap("Stormwind City"); end,	
+		map1 = "Interface\\WorldMap\\StormwindCity\\StormwindCity1",
+		map2 = "Interface\\WorldMap\\StormwindCity\\StormwindCity2",
+		map3 = "Interface\\WorldMap\\StormwindCity\\StormwindCity3",
+		map4 = "Interface\\WorldMap\\StormwindCity\\StormwindCity4",
+		map5 = "Interface\\WorldMap\\StormwindCity\\StormwindCity5",
+		map6 = "Interface\\WorldMap\\StormwindCity\\StormwindCity6",
+		map7 = "Interface\\WorldMap\\StormwindCity\\StormwindCity7",
+		map8 = "Interface\\WorldMap\\StormwindCity\\StormwindCity8",
+		map9 = "Interface\\WorldMap\\StormwindCity\\StormwindCity9",
+		map10 = "Interface\\WorldMap\\StormwindCity\\StormwindCity10",
+		map11 = "Interface\\WorldMap\\StormwindCity\\StormwindCity11",
+		map12 = "Interface\\WorldMap\\StormwindCity\\StormwindCity12"
+	},
 }
 
 -- Last time when a timer event was triggerd
@@ -261,8 +271,8 @@ local POI = {
 		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_IF_A",
 		localId = "A",
 		zone = "Ironforge",
-		x = 0.305,
-		y = 0.668,
+		x = 0.311,
+		y = 0.662,
 		npc = true,
 		public = true,
 	},	
@@ -272,8 +282,8 @@ local POI = {
 		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_IF_A1",
 		localId = "A1",
 		zone = "Ironforge",
-		x = 0.529,
-		y = 0.885,		
+		x = 0.527,
+		y = 0.864,		
 		npc = nil,
 		public = nil,
 	},
@@ -327,8 +337,8 @@ local POI = {
 		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_IF_A6",
 		localId = "A6",
 		zone = "Ironforge",
-		x = 0.194,
-		y = 0.575,		
+		x = 0.201,
+		y = 0.566,		
 		npc = true,
 		public = nil,
 	},	
@@ -393,8 +403,8 @@ local POI = {
 		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_IF_A12",
 		localId = "A12",
 		zone = "Ironforge",
-		x = 0.373,
-		y = 0.676,		
+		x = 0.362,
+		y = 0.668,		
 		npc = true,
 		public = nil,
 	},	
@@ -778,8 +788,8 @@ local POI = {
 		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_IF_F5",
 		localId = "F5",
 		zone = "Ironforge",
-		x = 0.576,
-		y = 0.913,
+		x = 0.575,
+		y = 0.905,
 		npc = nil,
 		public = nil,
 	},
@@ -954,8 +964,8 @@ local POI = {
 		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_IF_G13",
 		localId = "G13",
 		zone = "Ironforge",
-		x = 0.496,
-		y = 0.612,	
+		x = 0.465,
+		y = 0.600,	
 		npc = nil,
 		public = nil,
 	},
@@ -969,7 +979,536 @@ local POI = {
 		y = 0.523,	
 		npc = true,
 		public = nil,
-	},		
+	},	
+	["SW_A"] = {
+		name = "Kathedralenplatz",
+		description = "Stadtviertel",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "A",
+		zone = "Stormwind City",
+		x = 0.528,
+		y = 0.555,
+		npc = true,
+		public = true,
+	},	
+	["SW_A1"] = {
+		name = "Kathedrale des Lichts",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "A1",
+		zone = "Stormwind City",
+		x = 0.528,
+		y = 0.508,		
+		npc = true,
+		public = nil,
+	},
+	["SW_A2"] = {
+		name = "Rathaus",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "A2",
+		zone = "Stormwind City",
+		x = 0.568,
+		y = 0.470,		
+		npc = true,
+		public = nil,
+	},
+	["SW_A3"] = {
+		name = "Die Argentumdämmerung",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "A3",
+		zone = "Stormwind City",
+		x = 0.578,
+		y = 0.494,		
+		npc = nil,
+		public = nil,
+	},
+	["SW_A4"] = {
+		name = "Waisenhaus",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "A4",
+		zone = "Stormwind City",
+		x = 0.564,
+		y = 0.533,		
+		npc = true,
+		public = nil,
+	},
+	["SW_A5"] = {
+		name = "Perfekte Platten",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "A5",
+		zone = "Stormwind City",
+		x = 0.537,
+		y = 0.600,		
+		npc = true,
+		public = nil,
+	},
+	["SW_A6"] = {
+		name = "Nur Streitkolben",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "A6",
+		zone = "Stormwind City",
+		x = 0.489,
+		y = 0.550,		
+		npc = true,
+		public = nil,
+	},
+	["SW_A7"] = {
+		name = "---",
+		description = "Alte Emma",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "A7",
+		zone = "Stormwind City",
+		x = 0.603,
+		y = 0.568,		
+		npc = true,
+		public = nil,
+	},
+	["SW_A8"] = {
+		name = "---",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "A8",
+		zone = "Stormwind City",
+		x = 0.527,
+		y = 0.630,		
+		npc = nil,
+		public = nil,
+	},
+	["SW_A9"] = {
+		name = "Die Drei WInde",
+		description = "Transmogrifizierer",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "A9",
+		zone = "Stormwind City",
+		x = 0.503,
+		y = 0.614,		
+		npc = true,
+		public = nil,
+	},
+	["SW_B"] = {
+		name = "Der Zwergendistrikt",
+		description = "Stadtviertel",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B",
+		zone = "Stormwind City",
+		x = 0.631,
+		y = 0.339,
+		npc = true,
+		public = true,
+	},	
+	["SW_B1"] = {
+		name = "Steinhand",
+		description = "Lehrer für Bergbaufertigkeiten",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B1",
+		zone = "Stormwind City",
+		x = 0.590,
+		y = 0.369,		
+		npc = true,
+		public = nil,
+	},
+	["SW_B2"] = {
+		name = "---",
+		description = "Schmiedekunstlehrer",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B2",
+		zone = "Stormwind City",
+		x = 0.590,
+		y = 0.335,		
+		npc = true,
+		public = nil,
+	},
+	["SW_B3"] = {
+		name = "---",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B3",
+		zone = "Stormwind City",
+		x = 0.616,
+		y = 0.357,		
+		npc = true,
+		public = nil,
+	},
+	["SW_B4"] = {
+		name = "Auktionshaus",
+		description = "Auktionatoren",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B4",
+		zone = "Stormwind City",
+		x = 0.613,
+		y = 0.318,		
+		npc = true,
+		public = nil,
+	},
+	["SW_B5"] = {
+		name = "Bank",
+		description = "Bankfächer",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B5",
+		zone = "Stormwind City",
+		x = 0.639,
+		y = 0.295,		
+		npc = true,
+		public = nil,
+	},
+	["SW_B6"] = {
+		name = "Zum Goldenen Fass",
+		description = "Taverne",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B6",
+		zone = "Stormwind City",
+		x = 0.650,
+		y = 0.329,		
+		npc = true,
+		public = nil,
+	},
+	["SW_B7"] = {
+		name = "---",
+		description = "Jägerlehrer",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B7",
+		zone = "Stormwind City",
+		x = 0.672,
+		y = 0.372,		
+		npc = true,
+		public = nil,
+	},
+	["SW_B8"] = {
+		name = "Pott's Platten",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B8",
+		zone = "Stormwind City",
+		x = 0.650,
+		y = 0.495,		
+		npc = true,
+		public = nil,
+	},
+	["SW_B9"] = {
+		name = "Schattenspiele",
+		description = "Taverne",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B9",
+		zone = "Stormwind City",
+		x = 0.637,
+		y = 0.474,		
+		npc = true,
+		public = nil,
+	},
+	["SW_B10"] = {
+		name = "---",
+		description = "Leeres Haus im Hinterhof",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "B10",
+		zone = "Stormwind City",
+		x = 0.669,
+		y = 0.466,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C"] = {
+		name = "Altstadt",
+		description = "Stadtviertel",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C",
+		zone = "Stormwind City",
+		x = 0.751,
+		y = 0.628,
+		npc = true,
+		public = true,
+	},	
+	["SW_C1"] = {
+		name = "Zum Pfeifenden Schwein",
+		description = "Taverne",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C1",
+		zone = "Stormwind City",
+		x = 0.753,
+		y = 0.550,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C2"] = {
+		name = "Schöne schwere Waffen",
+		description = "Taverne",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C2",
+		zone = "Stormwind City",
+		x = 0.736,
+		y = 0.568,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C3"] = {
+		name = "Die fünf Tödlichen Gifte",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C3",
+		zone = "Stormwind City",
+		x = 0.738,
+		y = 0.590,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C4"] = {
+		name = "Ehrliche Klingen",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C4",
+		zone = "Stormwind City",
+		x = 0.767,
+		y = 0.581,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C5"] = {
+		name = "Begrenzte Immunität",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C5",
+		zone = "Stormwind City",
+		x = 0.767,
+		y = 0.613,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C6"] = {
+		name = "SI:7",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C6",
+		zone = "Stormwind City",
+		x = 0.802,
+		y = 0.624,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C7"] = {
+		name = "Kommandozentrale",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C7",
+		zone = "Stormwind City",
+		x = 0.798,
+		y = 0.694,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C8"] = {
+		name = "Halle des Champions",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C8",
+		zone = "Stormwind City",
+		x = 0.758,
+		y = 0.665,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C9"] = {
+		name = "Der Schützende Balg",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C9",
+		zone = "Stormwind City",
+		x = 0.727,
+		y = 0.628,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C10"] = {
+		name = "Stiefel des Thans",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C10",
+		zone = "Stormwind City",
+		x = 0.713,
+		y = 0.580,		
+		npc = true,
+		public = nil,
+	},
+	["SW_C11"] = {
+		name = "Der Silberschild",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C11",
+		zone = "Stormwind City",
+		x = 0.699,
+		y = 0.579,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D"] = {
+		name = "Handelsdistrikt",
+		description = "Stadtviertel",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "C",
+		zone = "Stormwind City",
+		x = 0.630,
+		y = 0.712,
+		npc = true,
+		public = true,
+	},	
+	["SW_D1"] = {
+		name = "Besucherzentrum",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D1",
+		zone = "Stormwind City",
+		x = 0.645,
+		y = 0.773,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D2"] = {
+		name = "Pestles Apotheke",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D2",
+		zone = "Stormwind City",
+		x = 0.633,
+		y = 0.746,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D3"] = {
+		name = "Auktionshaus",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D3",
+		zone = "Stormwind City",
+		x = 0.616,
+		y = 0.723,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D4"] = {
+		name = "Löwenherzrüstkammer",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D4",
+		zone = "Stormwind City",
+		x = 0.624,
+		y = 0.676,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D5"] = {
+		name = "Wellers Arsenal",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D5",
+		zone = "Stormwind City",
+		x = 0.636,
+		y = 0.690,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D6"] = {
+		name = "Täglicher Bedarf",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D6",
+		zone = "Stormwind City",
+		x = 0.643,
+		y = 0.719,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D7"] = {
+		name = "Trias' Käse",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D7",
+		zone = "Stormwind City",
+		x = 0.665,
+		y = 0.747,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D8"] = {
+		name = "Bank",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D8",
+		zone = "Stormwind City",
+		x = 0.625,
+		y = 0.773,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D9"] = {
+		name = "Die Güldene Rose",
+		description = "Gasthaus",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D9",
+		zone = "Stormwind City",
+		x = 0.609,
+		y = 0.748,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D10"] = {
+		name = "Der leere Köcher",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D10",
+		zone = "Stormwind City",
+		x = 0.590,
+		y = 0.692,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D11"] = {
+		name = "Barbier",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D11",
+		zone = "Stormwind City",
+		x = 0.613,
+		y = 0.656,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D12"] = {
+		name = "Weingut Gallina",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D12",
+		zone = "Stormwind City",
+		x = 0.594,
+		y = 0.773,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D13"] = {
+		name = "Schneiderei am Kanal",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D13",
+		zone = "Stormwind City",
+		x = 0.578,
+		y = 0.665,		
+		npc = true,
+		public = nil,
+	},
+	["SW_D14"] = {
+		name = "Duftende Blumen",
+		description = "???",
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "D14",
+		zone = "Stormwind City",
+		x = 0.699,
+		y = 0.711,		
+		npc = true,
+		public = nil,
+	},
+
 }
 
 -- display of POI information is locked
@@ -1069,14 +1608,14 @@ function GnomTEC_CityMaps:ShowPlayerPosition()
 		GNOMTEC_CITYMAPS_FRAME_POI:SetText("("..self.db.char.displayedMap.." ; "..string.format("%.3f",x).." ; "..string.format("%.3f",y)..")")
 		-- compute frame offsets
 		x = 1000.0 / 1024.0 * 600.0 * x	+ 15	-- visible texture / texturesize * framesize * position + offset
-		y = -(667.0 / 778.0 * 450.0 * y) - 20	-- visible texture / texturesize * framesize * position - offest
+		y = -(667.0 / 768.0 * 450.0 * y) - 20	-- visible texture / texturesize * framesize * position - offest
 		local playerFrame = getglobal("GNOMTEC_CITYMAPS_FRAME_PLAYER")
 		if (not playerFrame) then
 			playerFrame = CreateFrame("Frame","GNOMTEC_CITYMAPS_FRAME_PLAYER",GNOMTEC_CITYMAPS_FRAME)
 			playerFrame:SetFrameStrata(GNOMTEC_CITYMAPS_FRAME:GetFrameStrata());
 			playerFrame:SetFrameLevel(GNOMTEC_CITYMAPS_FRAME:GetFrameLevel()+21)
-			playerFrame:SetWidth(16); -- Set these to whatever height/width is needed 
-			playerFrame:SetHeight(16); -- for your Texture
+			playerFrame:SetWidth(16);  
+			playerFrame:SetHeight(16); 
 
 			local playerTexture = playerFrame:CreateTexture(nil,"OVERLAY");
 			playerTexture:SetTexture("Interface\\WorldMap\\WorldMapPlayerIcon");
@@ -1086,6 +1625,11 @@ function GnomTEC_CityMaps:ShowPlayerPosition()
 			playerFrame:SetPoint("CENTER",GNOMTEC_CITYMAPS_FRAME,"TOPLEFT", x,y)
 			playerFrame:Show();
 		else
+			if (1.0 == playerFrame:GetAlpha()) then
+				playerFrame:SetAlpha(0.8); 
+			else
+				playerFrame:SetAlpha(1.0); 
+			end
 			playerFrame:SetPoint("CENTER",GNOMTEC_CITYMAPS_FRAME,"TOPLEFT", x,y)
 			playerFrame:Show();		
 		end	
@@ -1184,7 +1728,7 @@ function GnomTEC_CityMaps:ShowPOI(id)
 	else		
 		-- compute frame offsets
 		x = 1000.0 / 1024.0 * 600.0 * x	+ 15	-- visible texture / texturesize * framesize * position + offset
-		y = -(667.0 / 778.0 * 450.0 * y) - 20	-- visible texture / texturesize * framesize * position - offest
+		y = -(667.0 / 768.0 * 450.0 * y) - 20	-- visible texture / texturesize * framesize * position - offest
 
 		local POIFrame = getglobal("GNOMTEC_CITYMAPS_FRAME_POI_"..id)
 		if (not POIFrame) then
@@ -1192,8 +1736,8 @@ function GnomTEC_CityMaps:ShowPOI(id)
 			POIFrame = CreateFrame("Frame","GNOMTEC_CITYMAPS_FRAME_POI_"..id,GNOMTEC_CITYMAPS_FRAME)
 			POIFrame:SetFrameStrata(GNOMTEC_CITYMAPS_FRAME:GetFrameStrata());
 			POIFrame:SetFrameLevel(GNOMTEC_CITYMAPS_FRAME:GetFrameLevel()+20)
-			POIFrame:SetWidth(16); -- Set these to whatever height/width is needed 
-			POIFrame:SetHeight(16); -- for your Texture
+			POIFrame:SetWidth(12); 
+			POIFrame:SetHeight(12);
 			POIFrame:EnableMouse(true);
 			POIFrame:HookScript("OnEnter",GnomTEC_CityMaps_POIFrame_OnEnter);
 			POIFrame:HookScript("OnLeave",GnomTEC_CityMaps_POIFrame_OnLeave);		
@@ -1297,8 +1841,8 @@ end
 function GnomTEC_CityMaps:TimerEvent()
 	local t = GetTime()
 		
-	-- Update Position every 5 second
-	if ((t-lastTimerEvent) > 5) then
+	-- Update Position every second
+	if ((t-lastTimerEvent) > 1) then
 		GnomTEC_CityMaps:ShowPlayerPosition()
 		
 		lastTimerEvent = t
@@ -1425,6 +1969,10 @@ function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 			if (1 == string.find(key,"IF_(%a+)(%d+)")) then
 				GnomTEC_CityMaps_UsedBy[GetRealmName()][key] = nil;
 			end
+		elseif ("Stormwind" == map) then
+			if (1 == string.find(key,"SW_(%a+)(%d+)")) then
+				GnomTEC_CityMaps_UsedBy[GetRealmName()][key] = nil;
+			end
 		end
 	end
 	
@@ -1433,6 +1981,10 @@ function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 		if (POI[key]) then
 			if ("Ironforge" == map) then
 				if (1 == string.find(key,"IF_(%a+)(%d+)")) then
+					GnomTEC_CityMaps_UsedBy[GetRealmName()][key] = emptynil( string.gsub(value or "","||","|") )
+				end
+			elseif ("Stormwind" == map) then
+				if (1 == string.find(key,"SW_(%a+)(%d+)")) then
 					GnomTEC_CityMaps_UsedBy[GetRealmName()][key] = emptynil( string.gsub(value or "","||","|") )
 				end
 			end
@@ -1445,6 +1997,10 @@ function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 	for key,value in pairs(POI) do
 		if ("Ironforge" == map) then
 			if (1 == string.find(key,"IF_(%a+)(%d+)")) then
+				GnomTEC_CityMaps:ShowPOI(key)
+			end
+		elseif ("Stormwind" == map) then
+			if (1 == string.find(key,"SW_(%a+)(%d+)")) then
 				GnomTEC_CityMaps:ShowPOI(key)
 			end
 		end
@@ -1471,6 +2027,10 @@ function GnomTEC_CityMaps:ExportStaticData(realm,map)
 	for key,value in pairs(POI) do
 		if ("Ironforge" == map) then
 			if (1 == string.find(key,"IF_(%a+)(%d+)")) then
+				table.insert(exportList,key)
+			end
+		elseif ("Stormwind" == map) then
+			if (1 == string.find(key,"SW_(%a+)(%d+)")) then
 				table.insert(exportList,key)
 			end
 		end

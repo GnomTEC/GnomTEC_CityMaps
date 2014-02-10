@@ -9,3 +9,4 @@ L["L_OPTIONS_VIEW_SHOWMSPDATA"] = "Nutze zur Anzeige der Gebäudebelegung Daten 
 L["L_OPTIONS_VIEW_SHOWPOILABEL"] ="Zeige POI-Labels anstatt Icons"
 L["L_OPTIONS_DATA"] = "Statische Gebäudebelegungsdaten"
 L["L_OPTIONS_DATA_IRONFORGE"] ="Daten für Eisenschmiede"
+L["L_OPTIONS_DATA_STORMWIND"] ="Daten für Sturmwind"

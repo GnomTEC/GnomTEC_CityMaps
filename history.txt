@@ -1,6 +1,16 @@
 GnomTEC CityMaps Addon - Change History 
 ==============================
 
+5.4.0.11 (2013-09-14)
+============
+- Updated interface version for WoW update 5.4.0
+
+V5.3.0.10 (2013-08-13)
+============
+- Added first set of prototype Stormwind POIs (yet without NPC information and pictures)
+- Smaller POI icons (because of less space in Stormwind) (now also with transparency)
+- Maps and POIs newly calibrated
+
 V5.3.0.9 (2013-06-11)
 ============
 - Now it is possible to show poi labels instead of icons

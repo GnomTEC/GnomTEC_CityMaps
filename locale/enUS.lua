@@ -10,3 +10,4 @@ L["L_OPTIONS_VIEW_SHOWMSPDATA"] = "Use data from rp flags for display of buildin
 L["L_OPTIONS_VIEW_SHOWPOILABEL"] ="Show POI labels instead of icons"
 L["L_OPTIONS_DATA"] = "Management of static data of building usage"
 L["L_OPTIONS_DATA_IRONFORGE"] ="Data for Ironforge"
+L["L_OPTIONS_DATA_STORMWIND"] ="Data for Stormwind"
