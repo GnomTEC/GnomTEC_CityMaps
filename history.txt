@@ -1,6 +1,13 @@
 GnomTEC CityMaps Addon - Change History 
 ==============================
 
+V5.3.0.8 (2013-06-08)
+============
+- Updated Ace3 libraries to version r1086
+- Updated LibTourist-3.0 to version WoW-5.3-beta1
+- Removed LibBabble-Zone-3.0 (deprecated) and using API functions from blizzard instead
+- Changed an internal used variable to local to remove interference to other GnomTEC addons
+
 V5.3.0.7 (2013-06-06)
 ============
 - Added import/export functionality for static data

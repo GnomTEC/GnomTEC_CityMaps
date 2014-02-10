@@ -1,6 +1,6 @@
 -- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 5.3.0.7
+-- Version: 5.3.0.8
 -- Author: GnomTEC
 -- Copyright 2012-2013 by GnomTEC
 -- http://www.gnomtec.de/
@@ -963,6 +963,9 @@ local POI = {
 
 -- display of POI information is locked
 local lockInfo = false
+
+-- config panel
+local panelConfiguration = nil
 
 -- ----------------------------------------------------------------------
 -- Startup initialization
