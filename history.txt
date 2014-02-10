@@ -1,6 +1,14 @@
 GnomTEC CityMaps Addon - Change History 
 ==============================
 
+5.4.2.12 (2013-12-14)
+============
+- Updated Ace3 libraries to version r1104
+- Updated ChatThrottleLib to version v23
+- Moved all POI text to localization files
+- POIs completed for Stormwind (Mage Quarter etc.)(yet without NPC information and pictures)
+- Added Darnassus map and POIs (yet without NPC information and pictures)
+
 5.4.0.11 (2013-09-14)
 ============
 - Updated interface version for WoW update 5.4.0

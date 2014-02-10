@@ -1,8 +1,18 @@
 ## Interface: 50400
 ## Title: GnomTEC_CityMaps
-## Notes: Interaktive Stadtkarten
+## Notes: Interactive city map
+## Notes-deDE: Interaktive Stadtkarten
+## Notes-esES: Mapa interactivo de la ciudad
+## Notes-esMX: Mapa interactivo de la ciudad
+## Notes-frFR: Carte interactive de la ville
+## Notes-itIT: Mappa interattiva della città
+## Notes-koKR: 대화 형 도시지도
+## Notes-ptBR: Mapa interativo da cidade
+## Notes-ruRU: Интерактивная карта города
+## Notes-zhCN: 交互式城市地图
+## Notes-zhTW: 交互式城市地圖
 ## Author: GnomTEC
-## Version: 5.4.0.11
+## Version: 5.4.2.12
 ## SavedVariablesPerCharacter: GnomTEC_CityMaps_Options
 ## SavedVariables: GnomTEC_CityMapsDB, GnomTEC_CityMaps_Flags, GnomTEC_CityMaps_UsedBy
 
