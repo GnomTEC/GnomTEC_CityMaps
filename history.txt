@@ -1,78 +1,68 @@
-GnomTEC CityMaps Addon - Change History 
-==============================
+== GnomTEC CityMaps Addon * Change History 
 
-5.4.2.14 (2014-01-26)
-============
-- Added announcement support
+=== 5.4.2.15 (2014-02-10)
+* Changed history.txt to WikiCreole format
+* Added .pkgmeta file for Curse.com
+* Added two new POIs in Stormwind
 
-5.4.2.13 (2013-12-24)
-============
-- Added import/export for Darnassus POIs
-- Added two POIs for tents in Stormwind Harbor
-- Added options to select between default or imported static data.
-- Default static data could be now updated with every new addon version
+=== 5.4.2.14 (2014-01-26)
+* Added announcement support
 
-5.4.2.12 (2013-12-14)
-============
-- Updated Ace3 libraries to version r1104
-- Updated ChatThrottleLib to version v23
-- Moved all POI text to localization files
-- POIs completed for Stormwind (Mage Quarter etc.)(yet without NPC information and pictures)
-- Added Darnassus map and POIs (yet without NPC information and pictures)
+=== 5.4.2.13 (2013-12-24)
+* Added import/export for Darnassus POIs
+* Added two POIs for tents in Stormwind Harbor
+* Added options to select between default or imported static data.
+* Default static data could be now updated with every new addon version
 
-5.4.0.11 (2013-09-14)
-============
-- Updated interface version for WoW update 5.4.0
+=== 5.4.2.12 (2013-12-14)
+* Updated Ace3 libraries to version r1104
+* Updated ChatThrottleLib to version v23
+* Moved all POI text to localization files
+* POIs completed for Stormwind (Mage Quarter etc.)(yet without NPC information and pictures)
+* Added Darnassus map and POIs (yet without NPC information and pictures)
 
-V5.3.0.10 (2013-08-13)
-============
-- Added first set of prototype Stormwind POIs (yet without NPC information and pictures)
-- Smaller POI icons (because of less space in Stormwind) (now also with transparency)
-- Maps and POIs newly calibrated
+=== 5.4.0.11 (2013-09-14)
+* Updated interface version for WoW update 5.4.0
 
-V5.3.0.9 (2013-06-11)
-============
-- Now it is possible to show poi labels instead of icons
-- Stormwind map enabled (yet without POIs)
+=== 5.3.0.10 (2013-08-13)
+* Added first set of prototype Stormwind POIs (yet without NPC information and pictures)
+* Smaller POI icons (because of less space in Stormwind) (now also with transparency)
+* Maps and POIs newly calibrated
 
-V5.3.0.8 (2013-06-08)
-============
-- Updated Ace3 libraries to version r1086
-- Updated LibTourist-3.0 to version WoW-5.3-beta1
-- Removed LibBabble-Zone-3.0 (deprecated) and using API functions from blizzard instead
-- Changed an internal used variable to local to remove interference to other GnomTEC addons
+=== 5.3.0.9 (2013-06-11)
+* Now it is possible to show poi labels instead of icons
+* Stormwind map enabled (yet without POIs)
 
-V5.3.0.7 (2013-06-06)
-============
-- Added import/export functionality for static data
+=== 5.3.0.8 (2013-06-08)
+* Updated Ace3 libraries to version r1086
+* Updated LibTourist-3.0 to version WoW-5.3-beta1
+* Removed LibBabble-Zone-3.0 (deprecated) and using API functions from blizzard instead
+* Changed an internal used variable to local to remove interference to other GnomTEC addons
 
-V5.3.0.6 (2013-06-05)
-============
-- Information from saved flag informations will now be added to internal DB on startup
+=== 5.3.0.7 (2013-06-06)
+* Added import/export functionality for static data
 
-V5.3.0.5 (2013-06-04)
-============
-- Added data collecting over Mary-Sue-Protocols Home field (HH).
+=== 5.3.0.6 (2013-06-05)
+* Information from saved flag informations will now be added to internal DB on startup
+
+=== 5.3.0.5 (2013-06-04)
+* Added data collecting over Mary-Sue-Protocols Home field (HH).
   This needs an active flag addon like GnomTEC Badge ore others MSP addons.
   You can add now multiple text passages like [<POI_ID>=<Displayed_Text>] in your HH field.
   Example: "Some normal HH text [IF_D2=GnomTEC branch office Ironforge]"
-- Added close button
-- POI information can be locked by selecting POI icon (unlock by then available close button of the info frame)
-- POI information can now be scrolled
-- Added configuration options for viewed data base
+* Added close button
+* POI information can be locked by selecting POI icon (unlock by then available close button of the info frame)
+* POI information can now be scrolled
+* Added configuration options for viewed data base
 
-V5.3.0.4 (2013-06-03)
-============
-- Changed POI icons
+=== 5.3.0.4 (2013-06-03)
+* Changed POI icons
 
-V5.3.0.3 (2013-06-03)
-============
-- Completed Ironforge POIs
+=== V5.3.0.3 (2013-06-03)
+* Completed Ironforge POIs
 
-V5.3.0.2 (2013-05-30)
-============
-- Added Ironforge POIs (Area A)
+=== 5.3.0.2 (2013-05-30)
+* Added Ironforge POIs (Area A)
 
-V5.3.0.1 (2013-05-30)
-============
-- Initial version
+=== 5.3.0.1 (2013-05-30)
+* Initial version

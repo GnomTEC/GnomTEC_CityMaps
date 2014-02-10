@@ -1,6 +1,6 @@
 ﻿-- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 5.4.2.14
+-- Version: 5.4.2.15
 -- Author: GnomTEC
 -- Copyright 2012-2014 by GnomTEC
 -- http://www.gnomtec.de/
@@ -1757,6 +1757,17 @@ local POI = {
 		npc = true,
 		public = true,
 	},	
+	["SW_F1"] = {
+		name = L["L_SW_F1_NAME"],
+		description = L["L_SW_F1_DESC"],
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "F1",
+		zone = "Stormwind City",
+		x = 0.377,
+		y = 0.566,		
+		npc = false,
+		public = nil,
+	},
 	["SW_G"] = {
 		name = L["L_SW_G_NAME"],
 		description = L["L_SW_G_DESC"],
@@ -1767,6 +1778,17 @@ local POI = {
 		y = 0.440,
 		npc = true,
 		public = true,
+	},	
+	["SW_G1"] = {
+		name = L["L_SW_G1_NAME"],
+		description = L["L_SW_G1_DESC"],
+		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
+		localId = "G1",
+		zone = "Stormwind City",
+		x = 0.304,
+		y = 0.291,		
+		npc = nil,
+		public = nil,
 	},	
 	["SW_G2"] = {
 		name = L["L_SW_G2_NAME"],
@@ -1779,14 +1801,14 @@ local POI = {
 		npc = nil,
 		public = nil,
 	},	
-	["SW_G1"] = {
-		name = L["L_SW_G1_NAME"],
-		description = L["L_SW_G1_DESC"],
+	["SW_G3"] = {
+		name = L["L_SW_G3_NAME"],
+		description = L["L_SW_G3_DESC"],
 		picture =  "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POI_NONE",
-		localId = "G1",
+		localId = "G3",
 		zone = "Stormwind City",
-		x = 0.304,
-		y = 0.291,		
+		x = 0.058,
+		y = 0.069,		
 		npc = nil,
 		public = nil,
 	},	

@@ -292,6 +292,8 @@ L["L_SW_E15_DESC"] = "Verzauberkunstlehrer"
 
 L["L_SW_F_NAME"] = "Die Alte Kaserne"
 L["L_SW_F_DESC"] = "Zerstörtes Stadtviertel"
+L["L_SW_F1_NAME"] = "Gebäudeteil der Alten Kaserne"
+L["L_SW_F1_DESC"] = "Ruine"
 
 L["L_SW_G_NAME"] = "Hafen"
 L["L_SW_G_DESC"] = "Hafen"
@@ -299,6 +301,8 @@ L["L_SW_G1_NAME"] = "Zelt"
 L["L_SW_G1_DESC"] = "Zelt mit Theke davor. Tisch, Bierfass und Verksufswägen außenrum. "
 L["L_SW_G2_NAME"] = "Zelt"
 L["L_SW_G2_DESC"] = "Zelt mit Theke davor. Tisch, Fässer und Verksufswagen außenrum."
+L["L_SW_G3_NAME"] = "Leuchtturm"
+L["L_SW_G3_DESC"] = "Leuchturm mit Nebengebäude und Steg (keine Innenräume)"
 
 
 L["L_SW_H_NAME"] = "Friedhof"
