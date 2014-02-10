@@ -1,0 +1,28 @@
+------------------------------------------------------------------------
+r145 | iceeagle | 2012-08-31 11:30:41 +0000 (Fri, 31 Aug 2012) | 2 lines
+Changed paths:
+   M /trunk/LibTourist-3.0.lua
+   M /trunk/LibTourist-3.0.toc
+
+- update MOP zones (by Odica)
+- replaced LibBabble-Zone by GetMapNameByID and some translation tables
+------------------------------------------------------------------------
+r144 | torhal | 2012-08-31 01:51:54 +0000 (Fri, 31 Aug 2012) | 1 line
+Changed paths:
+   M /trunk/LibTourist-3.0.lua
+
+Added the concept of isNeutral and isAlliance for zone-coloration in MoP. Replaced hideously hardcoded race-name check for isHorde with UnitFactionGroup(). If a continent name is not known, set its yards to 0 instead of dying. This library needs to die in a fire fueled by napalm.
+------------------------------------------------------------------------
+r143 | Odica | 2012-08-07 14:04:09 +0000 (Tue, 07 Aug 2012) | 2 lines
+Changed paths:
+   M /trunk/LibTourist-3.0.lua
+
+- function zoneIter: Complexes are no longer included
+- function IsZone: No longer returns True for Complexes
+------------------------------------------------------------------------
+r142 | Odica | 2012-06-13 20:23:49 +0000 (Wed, 13 Jun 2012) | 1 line
+Changed paths:
+   M /trunk/LibTourist-3.0.lua
+
+Added Twilight Highlands return portals to Orgrimmar and Stormwind City.
+------------------------------------------------------------------------

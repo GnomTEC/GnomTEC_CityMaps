@@ -1,0 +1,269 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+	<Frame name="GNOMTEC_CITYMAPS_BOOK" parent="UIParent" toplevel="true" movable="true" resizable="false" clampedToScreen="true" hidden="false">
+		<Size x="48" y="48" />
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER"/>
+		</Anchors>
+		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize val="16"/>
+			<TileSize val="16"/>
+			<Color r="0.25" g="0.25" b="0.25"/>
+			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+		</Backdrop>
+		<Frames>
+			<CheckButton name="$parent_SHOWHIDE">
+				<Size x="32" y="32" />
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="CENTER">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<NormalTexture file="Interface\ICONS\INV_Misc_EngGizmos_20" />
+				<CheckedTexture file="Interface\ICONS\INV_Misc_EngGizmos_20" />
+				<HighlightTexture file="Interface\ICONS\INV_Misc_EngGizmos_20" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>
+						if (GNOMTEC_CITYMAPS_FRAME:IsShown())then 
+							GNOMTEC_CITYMAPS_FRAME:Hide();
+						else
+							GNOMTEC_CITYMAPS_FRAME:Show();
+						end
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+		<Scripts>
+			<OnMouseDown>self:StartMoving();</OnMouseDown>
+			<OnMouseUp>self:StopMovingOrSizing();</OnMouseUp>
+		</Scripts>
+	</Frame>
+
+	<Frame name="GNOMTEC_CITYMAPS_FRAME" parent="UIParent" toplevel="true" movable="true" resizable="false" clampedToScreen="true" hidden="true">
+		<Size x="615" y="460" />
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER"/>
+		</Anchors>
+		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize val="16"/>
+			<TileSize val="16"/>
+			<Color r="0.25" g="0.25" b="0.25"/>
+			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+		</Backdrop>
+		<Layers>
+			<Layer>
+				<FontString name="$parent_TITLE" inherits="GameFontNormalLeft" justifyH="CENTER" text="GnomTEC CityMaps">
+					<Color r="1.0" g="1.0" b="1.0"/>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="0" y="-5"/>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+					<Size x="610" y="14" />
+				</FontString>
+				<FontString name="$parent_POI" inherits="GameFontNormalLeft" justifyH="CENTER" text="(- ; - ; -)">
+					<Color r="1.0" g="1.0" b="1.0"/>
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="Bottom">
+							<Offset x="0" y="5"/>
+						</Anchor>
+					</Anchors>
+					<Size x="610" y="14" />
+				</FontString>
+				<Texture name="$parent_MAP1" file="Interface\WorldMap\StormwindCity\StormwindCity1">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="15" y="-20" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP2" file="Interface\WorldMap\StormwindCity\StormwindCity2">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="165" y="-20" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP3" file="Interface\WorldMap\StormwindCity\StormwindCity3">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="315" y="-20" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP4" file="Interface\WorldMap\StormwindCity\StormwindCity4">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="465" y="-20" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP5" file="Interface\WorldMap\StormwindCity\StormwindCity5">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="15" y="-170" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP6" file="Interface\WorldMap\StormwindCity\StormwindCity6">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="165" y="-170" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP7" file="Interface\WorldMap\StormwindCity\StormwindCity7">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="315" y="-170" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP8" file="Interface\WorldMap\StormwindCity\StormwindCity8">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="465" y="-170" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP9" file="Interface\WorldMap\StormwindCity\StormwindCity9">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="15" y="-320" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP10" file="Interface\WorldMap\StormwindCity\StormwindCity10">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="165" y="-320" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP11" file="Interface\WorldMap\StormwindCity\StormwindCity11">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="315" y="-320" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_MAP12" file="Interface\WorldMap\StormwindCity\StormwindCity12">
+					<Size x="150" y="150" />
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="465" y="-320" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parent_INFO" hidden="true">
+				<Size x="500" y="170" />
+				<Anchors>
+					<Anchor point="TOP" relativePoint="TOP">
+						<Offset x="0" y="-30" />
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize val="16"/>
+					<TileSize val="16"/>
+					<Color r="0.0" g="0.0" b="0.0"/>
+					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+				</Backdrop>
+				<Frames>
+					<EditBox name="$parent_DESCRIPTION" setAllPoints="true" multiline="true" autofocus="false">
+						<FontString inherits="GameFontWhite"/>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="220" y="-30"/>
+							</Anchor>
+							<Anchor point="RIGHT">
+								<Offset x="-10" y="0"/>
+							</Anchor>
+						</Anchors>
+						<Size x="270" y="150" />
+						<Scripts>
+							<OnLoad>
+								self:EnableKeyboard(false);
+								self:EnableMouse(false);	
+							</OnLoad>
+						</Scripts>
+					</EditBox>
+				</Frames>
+				<Layers>
+					<Layer>
+						<FontString name="$parent_NAME" inherits="GameFontNormalLargeLeft">
+							<Color r="1.0" g="1.0" b="0.0"/>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="220" y="-10"/>
+								</Anchor>
+								<Anchor point="RIGHT">
+									<Offset x="0" y="0"/>
+								</Anchor>
+							</Anchors>
+							<Size x="280" y="18" />
+						</FontString>
+						<FontString name="$parent_LOCALID" inherits="GameFontNormalLargeLeft" justifyH="RIGHT">
+							<Color r="1.0" g="1.0" b="0.0"/>
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT">
+									<Offset x="-10" y="10"/>
+								</Anchor>
+							</Anchors>
+							<Size x="30" y="18" />
+						</FontString>
+						<Texture name="$parent_PICTURE" file="Interface\WorldMap\StormwindCity\StormwindCity1">
+							<TexCoords top="0.0" left="0.0" bottom="0.5859375" right="0.78125"/>
+							<Size x="200" y="150" />
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="10" y="-10" />
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Button name="$parent_SELECTMAP_BUTTON" inherits="GameMenuButtonTemplate" text="Sturmwind">
+				<Size x="590" y="30" />
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="Bottom">
+						<Offset x="0" y="20" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						GnomTEC_CityMaps:SelectMap_Button_OnClick(self, button, down)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame name="$parent_SELECTMAP_DROPDOWN" inherits="UIDropDownMenuTemplate" id="1">
+				<Scripts>
+					<OnLoad>
+						GnomTEC_CityMaps:SelectMap_DropDown_OnLoad(self)
+					</OnLoad>
+				</Scripts>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnMouseDown>self:StartMoving();</OnMouseDown>
+			<OnMouseUp>self:StopMovingOrSizing();</OnMouseUp>
+			<OnUpdate>GnomTEC_CityMaps:TimerEvent();</OnUpdate>
+		</Scripts>
+	</Frame>
+</Ui>
