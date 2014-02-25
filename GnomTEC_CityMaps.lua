@@ -1,6 +1,6 @@
 ﻿-- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 5.4.2.15
+-- Version: 5.4.7.16
 -- Author: GnomTEC
 -- Copyright 2012-2014 by GnomTEC
 -- http://www.gnomtec.de/
@@ -33,6 +33,30 @@ GnomTEC_CityMaps_Options = {
 -- ----------------------------------------------------------------------
 -- Addon global Constants (local)
 -- ----------------------------------------------------------------------
+
+-- internal used version number since WoW only updates from TOC on game start
+local addonVersion = "5.4.7.16"
+
+-- addonInfo for addon registration to GnomTEC API
+local addonInfo = {
+	["Name"] = "GnomTEC CityMaps",
+	["Version"] = addonVersion,
+	["Date"] = "2014-02-25",
+	["Author"] = "GnomTEC",
+	["Email"] = "info@gnomtec.de",
+	["Website"] = "http://www.gnomtec.de/",
+	["Copyright"] = "(c)2012-2014 by GnomTEC",
+}
+
+-- GnomTEC API revision
+local GNOMTEC_REVISION = 0
+
+-- Log levels
+local LOG_FATAL 	= 0
+local LOG_ERROR	= 1
+local LOG_WARN		= 2
+local LOG_INFO 	= 3
+local LOG_DEBUG 	= 4
 
 local CONST_POIICON_FREE = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_FREE"
 local CONST_POIICON_FREE_WITH_NPC = "Interface\\AddOns\\GnomTEC_CityMaps\\Textures\\POIICON_FREE_WITH_NPC"
@@ -128,27 +152,27 @@ local optionsMain = {
 				descriptionVersion = {
 				order = 1,
 				type = "description",			
-				name = "|cffffd700".."Version"..": ".._G["GREEN_FONT_COLOR_CODE"]..GetAddOnMetadata("GnomTEC_CityMaps", "Version"),
+				name = "|cffffd700".."Version"..": ".._G["GREEN_FONT_COLOR_CODE"]..addonInfo["Version"],
 				},
 				descriptionAuthor = {
 					order = 2,
 					type = "description",
-					name = "|cffffd700".."Autor"..": ".."|cffff8c00".."GnomTEC",
+					name = "|cffffd700".."Author"..": ".."|cffff8c00"..addonInfo["Author"],
 				},
 				descriptionEmail = {
 					order = 3,
 					type = "description",
-					name = "|cffffd700".."Email"..": ".._G["HIGHLIGHT_FONT_COLOR_CODE"].."info@gnomtec.de",
+					name = "|cffffd700".."Email"..": ".._G["HIGHLIGHT_FONT_COLOR_CODE"]..addonInfo["Email"],
 				},
 				descriptionWebsite = {
 					order = 4,
 					type = "description",
-					name = "|cffffd700".."Website"..": ".._G["HIGHLIGHT_FONT_COLOR_CODE"].."http://www.gnomtec.de/",
+					name = "|cffffd700".."Website"..": ".._G["HIGHLIGHT_FONT_COLOR_CODE"]..addonInfo["Website"],
 				},
 				descriptionLicense = {
 					order = 5,
 					type = "description",
-					name = "|cffffd700".."Copyright"..": ".._G["HIGHLIGHT_FONT_COLOR_CODE"].."(c)2012-2014 by GnomTEC",
+					name = "|cffffd700".."Copyright"..": ".._G["HIGHLIGHT_FONT_COLOR_CODE"]..addonInfo["Copyright"],
 				},
 			}
 		},
@@ -2573,6 +2597,26 @@ panelConfiguration = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("GnomTEC Ci
 LibStub("AceConfigDialog-3.0"):AddToBlizOptions("GnomTEC CityMaps Data", L["L_OPTIONS_DATA"], "GnomTEC CityMaps");
 
 -- ----------------------------------------------------------------------
+-- Local stubs for the GnomTEC API
+-- ----------------------------------------------------------------------
+
+local function GnomTEC_LogMessage(level, message)
+	if (GnomTEC) then
+		GnomTEC:LogMessage(GnomTEC_CityMaps, level, message)
+	else
+		if (level < LOG_DEBUG) then
+			GnomTEC_CityMaps:Print(message)
+		end
+	end
+end
+
+local function GnomTEC_RegisterAddon()
+	if (GnomTEC) then
+		GnomTEC:RegisterAddon(GnomTEC_CityMaps, addonInfo, GNOMTEC_REVISION)
+	end 
+end
+
+-- ----------------------------------------------------------------------
 -- Local functions
 -- ----------------------------------------------------------------------
 
@@ -3448,7 +3492,8 @@ function GnomTEC_CityMaps:OnInitialize()
  	-- Code that you want to run when the addon is first loaded goes here.
 	self.db = LibStub("AceDB-3.0"):New("GnomTEC_CityMapsDB")
 
-  	GnomTEC_CityMaps:Print("Willkommen bei GnomTEC_CityMaps")
+  	GnomTEC_RegisterAddon()
+  	GnomTEC_LogMessage(LOG_INFO, "Willkommen bei GnomTEC_CityMaps")
   	  	
 end
 
@@ -3457,7 +3502,7 @@ function GnomTEC_CityMaps:OnEnable()
     -- Called when the addon is enabled
 	local realm = GetRealmName()
 
-	GnomTEC_CityMaps:Print("GnomTEC_CityMaps Enabled")
+	GnomTEC_LogMessage(LOG_INFO, "GnomTEC_CityMaps Enabled")
 
 	-- Initialize options which are propably not valid because they are new added in new versions of addon
 	if (not self.db.char.displayedMap) then

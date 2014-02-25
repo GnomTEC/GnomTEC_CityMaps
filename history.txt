@@ -1,4 +1,7 @@
-== GnomTEC CityMaps Addon * Change History 
+== GnomTEC CityMaps - Change History 
+
+=== 5.4.7.16 (2014-02-25)
+* Added support of GnomTEC_Assistant.
 
 === 5.4.2.15 (2014-02-10)
 * Changed history.txt to WikiCreole format
