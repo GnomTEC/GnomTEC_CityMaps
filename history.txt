@@ -1,5 +1,8 @@
 == GnomTEC CityMaps - Change History 
 
+=== 5.4.7.17 (2014-03-15)
+* Maintenance update
+
 === 5.4.7.16 (2014-02-25)
 * Added support of GnomTEC_Assistant.
 
