@@ -15,10 +15,13 @@ L["L_OPTIONS_DATA_STORMWIND_DEFAULT"] = "Use default data deliverd whith the add
 L["L_OPTIONS_DATA_STORMWIND"] ="Data for Stormwind"
 L["L_OPTIONS_DATA_DARNASSUS_DEFAULT"] = "Use default data deliverd whith the addon for Darnassus"
 L["L_OPTIONS_DATA_DARNASSUS"] ="Data for Darnassus"
+L["L_OPTIONS_DATA_DALARAN_DEFAULT"] = "Use default data deliverd whith the addon for Dalaran"
+L["L_OPTIONS_DATA_DALARAN"] ="Data for Dalaran"
 
 L["L_IRONFORGE"] = "Ironforge"
 L["L_STORMWIND"] = "Stormwind"
 L["L_DARNASSUS"] = "Darnassus"
+L["L_DALARAN"] = "Dalaran"
 
 L["L_IF_A_NAME"] = "Das Bankenviertel"
 L["L_IF_A_DESC"] = "Öffentlicher Platz"

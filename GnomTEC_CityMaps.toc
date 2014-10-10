@@ -12,7 +12,7 @@
 ## Notes-zhCN: 交互式城市地图
 ## Notes-zhTW: 交互式城市地圖
 ## Author: GnomTEC
-## Version: 5.4.7.17
+## Version: 5.4.8.18
 ## SavedVariablesPerCharacter: GnomTEC_CityMaps_Options
 ## SavedVariables: GnomTEC_CityMapsDB, GnomTEC_CityMaps_Flags, GnomTEC_CityMaps_UsedBy, GnomTEC_CityMaps_Announcements
 

@@ -1,5 +1,10 @@
 == GnomTEC CityMaps - Change History 
 
+=== 5.4.8.18 (2014-10-10)
+* Maintenance update for 6.0.2 preparation (updated libs)
+* Fixed issue with player in unknown zone and showing coordinates.
+* Added additional filter for TRP2 {RRGGBB} color codes
+
 === 5.4.7.17 (2014-03-15)
 * Maintenance update
 

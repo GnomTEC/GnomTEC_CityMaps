@@ -1,6 +1,6 @@
 ﻿-- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 5.4.7.17
+-- Version: 5.4.8.18
 -- Author: GnomTEC
 -- Copyright 2012-2014 by GnomTEC
 -- http://www.gnomtec.de/
@@ -35,13 +35,13 @@ GnomTEC_CityMaps_Options = {
 -- ----------------------------------------------------------------------
 
 -- internal used version number since WoW only updates from TOC on game start
-local addonVersion = "5.4.7.17"
+local addonVersion = "5.4.8.18"
 
 -- addonInfo for addon registration to GnomTEC API
 local addonInfo = {
 	["Name"] = "GnomTEC CityMaps",
 	["Version"] = addonVersion,
-	["Date"] = "2014-03-15",
+	["Date"] = "2014-10-10",
 	["Author"] = "GnomTEC",
 	["Email"] = "info@gnomtec.de",
 	["Website"] = "http://www.gnomtec.de/",
@@ -286,6 +286,26 @@ local optionsData = {
 			width = 'full',
 			order = 6
 		},
+		cityMapsOptionDataDalaranDefault = {
+			type = "toggle",
+			name = L["L_OPTIONS_DATA_DALARAN_DEFAULT"],
+			desc = "",
+			set = function(info,val) GnomTEC_CityMaps:SetStaticDataIsDefault(GetRealmName(),"Dalaran",val) end,
+	   	get = function(info) return GnomTEC_CityMaps:GetStaticDataIsDefault(GetRealmName(),"Dalaran") end,
+			width = 'full',
+			order = 7
+		},		
+		CityMapsOptionDataDalaran = {
+			type = "input",
+			name = L["L_OPTIONS_DATA_DALARAN"],
+			desc = "",
+			disabled = function(info) return GnomTEC_CityMaps:GetStaticDataIsDefault(GetRealmName(),"Dalaran") end,
+			set = function(info,val) GnomTEC_CityMaps:ImportStaticData(GetRealmName(),"Dalaran",val) end,
+    		get = function(info) return GnomTEC_CityMaps:ExportStaticData(GetRealmName(),"Dalaran") end,
+			multiline = 10,
+			width = 'full',
+			order = 8
+		},
 	},
 }
 
@@ -343,6 +363,23 @@ local availableMaps = {
 		map10 = "Interface\\WorldMap\\Darnassus\\Darnassus10",
 		map11 = "Interface\\WorldMap\\Darnassus\\Darnassus11",
 		map12 = "Interface\\WorldMap\\Darnassus\\Darnassus12"
+	},
+	["Dalaran"] = {
+		text = L["L_DALARAN"],
+		notCheckable = 1,
+		func = function () GnomTEC_CityMaps:SetMap("Dalaran"); end,	
+		map1 = "Interface\\WorldMap\\Dalaran\\Dalaran1_1",
+		map2 = "Interface\\WorldMap\\Dalaran\\Dalaran1_2",
+		map3 = "Interface\\WorldMap\\Dalaran\\Dalaran1_3",
+		map4 = "Interface\\WorldMap\\Dalaran\\Dalaran1_4",
+		map5 = "Interface\\WorldMap\\Dalaran\\Dalaran1_5",
+		map6 = "Interface\\WorldMap\\Dalaran\\Dalaran1_6",
+		map7 = "Interface\\WorldMap\\Dalaran\\Dalaran1_7",
+		map8 = "Interface\\WorldMap\\Dalaran\\Dalaran1_8",
+		map9 = "Interface\\WorldMap\\Dalaran\\Dalaran1_9",
+		map10 = "Interface\\WorldMap\\Dalaran\\Dalaran1_10",
+		map11 = "Interface\\WorldMap\\Dalaran\\Dalaran1_11",
+		map12 = "Interface\\WorldMap\\Dalaran\\Dalaran1_12"
 	},
 }
 
@@ -2620,6 +2657,9 @@ local function emptynil( x ) return x ~= "" and x or nil end
 local function cleanpipe( x )
 	x = x or ""
 	
+	-- Filter TRP2 {} color codes
+	x = string.gsub( x, "{%x%x%x%x%x%x}", "" )
+	
 	-- Filter coloring
 	x = string.gsub( x, "|c%x%x%x%x%x%x%x%x", "" )
 	x = string.gsub( x, "|r", "" )
@@ -2676,13 +2716,13 @@ function GnomTEC_CityMaps:ShowPlayerPosition()
 	end
 		
 	if (not x or not y) then
+		GNOMTEC_CITYMAPS_FRAME_POI:SetText("("..(zone or "???").." ; "..string.format("%.3f",posX).." ; "..string.format("%.3f",posY)..")")
 		-- Wir sind nicht auf einer Position die auf der aktuellen Karte angezeigt werden könnte
 		local playerFrame = getglobal("GNOMTEC_CITYMAPS_FRAME_PLAYER")
 		if (playerFrame) then
 			playerFrame:Hide()
 		end
 	else
-	
 		GNOMTEC_CITYMAPS_FRAME_POI:SetText("("..self.db.char.displayedMap.." ; "..string.format("%.3f",x).." ; "..string.format("%.3f",y)..")")
 		-- compute frame offsets
 		x = 1000.0 / 1024.0 * 600.0 * x	+ 15	-- visible texture / texturesize * framesize * position + offset
@@ -3088,6 +3128,8 @@ function GnomTEC_CityMaps:SetStaticDataIsDefault(realm, map, isDefault)
 		GnomTEC_CityMaps_UsedBy[realm]["SW_ISDEFAULT"] = isDefault;
 	elseif ("Darnassus" == map) then
 		GnomTEC_CityMaps_UsedBy[realm]["DN_ISDEFAULT"] = isDefault;
+	elseif ("Dalaran" == map) then
+		GnomTEC_CityMaps_UsedBy[realm]["DA_ISDEFAULT"] = isDefault;
 	end
 	
 	-- set static data to default values if selected so
@@ -3104,6 +3146,10 @@ function GnomTEC_CityMaps:SetStaticDataIsDefault(realm, map, isDefault)
 				end
 			elseif ("Darnassus" == map) then
 				if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+					GnomTEC_CityMaps_UsedBy[realm][key] = nil;
+				end
+			elseif ("Dalaran" == map) then
+				if (1 == string.find(key,"DA_(%a+)(%d+)")) then
 					GnomTEC_CityMaps_UsedBy[realm][key] = nil;
 				end
 			end
@@ -3123,6 +3169,10 @@ function GnomTEC_CityMaps:SetStaticDataIsDefault(realm, map, isDefault)
 					end
 				elseif ("Darnassus" == map) then
 					if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+						GnomTEC_CityMaps_UsedBy[realm][key] = CONST_USEDBY_DEFAULT[realm][key]
+					end
+				elseif ("Dalaran" == map) then
+					if (1 == string.find(key,"DA_(%a+)(%d+)")) then
 						GnomTEC_CityMaps_UsedBy[realm][key] = CONST_USEDBY_DEFAULT[realm][key]
 					end
 				end
@@ -3145,6 +3195,10 @@ function GnomTEC_CityMaps:SetStaticDataIsDefault(realm, map, isDefault)
 				if (1 == string.find(key,"DN_(%a+)(%d+)")) then
 					GnomTEC_CityMaps:ShowPOI(key)
 				end
+			elseif ("Dalaran" == map) then
+				if (1 == string.find(key,"DA_(%a+)(%d+)")) then
+					GnomTEC_CityMaps:ShowPOI(key)
+				end
 			end
 		end
 		
@@ -3160,6 +3214,8 @@ function GnomTEC_CityMaps:GetStaticDataIsDefault(realm, map)
 		return GnomTEC_CityMaps_UsedBy[realm]["SW_ISDEFAULT"]
 	elseif ("Darnassus" == map) then
 		return GnomTEC_CityMaps_UsedBy[realm]["DN_ISDEFAULT"]
+	elseif ("Dalaran" == map) then
+		return GnomTEC_CityMaps_UsedBy[realm]["DA_ISDEFAULT"]
 	end
 	
 	return false
@@ -3184,6 +3240,10 @@ function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 			if (1 == string.find(key,"DN_(%a+)(%d+)")) then
 				GnomTEC_CityMaps_UsedBy[realm][key] = nil;
 			end
+		elseif ("Dalaran" == map) then
+			if (1 == string.find(key,"DA_(%a+)(%d+)")) then
+				GnomTEC_CityMaps_UsedBy[realm][key] = nil;
+			end
 		end
 	end
 	if ("Ironforge" == map) then
@@ -3192,6 +3252,8 @@ function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 		GnomTEC_CityMaps_UsedBy[realm]["SW_ISDEFAULT"] = false;
 	elseif ("Darnassus" == map) then
 		GnomTEC_CityMaps_UsedBy[realm]["DN_ISDEFAULT"] = false;
+	elseif ("Dalaran" == map) then
+		GnomTEC_CityMaps_UsedBy[realm]["DA_ISDEFAULT"] = false;
 	end
 	
 	-- add static usage information of the selected map from text input
@@ -3207,6 +3269,10 @@ function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 				end
 			elseif ("Darnassus" == map) then
 				if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+					GnomTEC_CityMaps_UsedBy[realm][key] = emptynil( string.gsub(value or "","||","|") )
+				end
+			elseif ("Dalaran" == map) then
+				if (1 == string.find(key,"DA_(%a+)(%d+)")) then
 					GnomTEC_CityMaps_UsedBy[realm][key] = emptynil( string.gsub(value or "","||","|") )
 				end
 			end
@@ -3227,6 +3293,10 @@ function GnomTEC_CityMaps:ImportStaticData(realm, map, text)
 			end
 		elseif ("Darnassus" == map) then
 			if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+				GnomTEC_CityMaps:ShowPOI(key)
+			end
+		elseif ("Dalaran" == map) then
+			if (1 == string.find(key,"DA_(%a+)(%d+)")) then
 				GnomTEC_CityMaps:ShowPOI(key)
 			end
 		end
@@ -3262,6 +3332,10 @@ function GnomTEC_CityMaps:ExportStaticData(realm,map)
 			end
 		elseif ("Darnassus" == map) then
 			if (1 == string.find(key,"DN_(%a+)(%d+)")) then
+				table.insert(exportList,key)
+			end
+		elseif ("Dalaran" == map) then
+			if (1 == string.find(key,"DA_(%a+)(%d+)")) then
 				table.insert(exportList,key)
 			end
 		end
@@ -3510,6 +3584,7 @@ function GnomTEC_CityMaps:OnEnable()
 		GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Ironforge", true)
 		GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Stormwind", true)
 		GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Darnassus", true)		
+		GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Dalaran", true)		
 	end
 	
 	-- initialize map
@@ -3519,6 +3594,7 @@ function GnomTEC_CityMaps:OnEnable()
 	GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Ironforge", GnomTEC_CityMaps:GetStaticDataIsDefault(realm, "Ironforge"))
 	GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Stormwind", GnomTEC_CityMaps:GetStaticDataIsDefault(realm, "Stormwind"))
 	GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Darnassus", GnomTEC_CityMaps:GetStaticDataIsDefault(realm, "Darnassus"))
+	GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Dalaran", GnomTEC_CityMaps:GetStaticDataIsDefault(realm, "Dalaran"))
 		
 	-- initialize hooks and events
 	table.insert( msp_GnomTEC.callback.received, GnomTEC_CityMaps_MSPcallback )
