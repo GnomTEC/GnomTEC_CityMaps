@@ -1,5 +1,8 @@
 == GnomTEC CityMaps - Change History 
 
+=== 7.2.0.24 (2017-04-01)
+* Updated TOC for WoW patch 7.2.0
+
 === 7.1.0.23 (2016-10-30)
 * Updated TOC for WoW patch 7.1.0
 
