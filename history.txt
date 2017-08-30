@@ -1,6 +1,6 @@
 == GnomTEC CityMaps - Change History 
 
-=== 7.3.0.24 (2017-08-30)
+=== 7.3.0.25 (2017-08-30)
 * Updated TOC for WoW patch 7.3.0
 * Updated included libraries: Ace3 and LibTourist-3.0
 
