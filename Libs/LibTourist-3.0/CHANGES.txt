@@ -1,0 +1,39 @@
+------------------------------------------------------------------------
+r191 | Odica | 2017-04-03 16:13:04 -0500 (Mon, 03 Apr 2017) | 6 lines
+Changed paths:
+   M /trunk/LibTourist-3.0.lua
+   M /trunk/LibTourist-3.0.toc
+
+- updated TOC to 70200
+- added 29 missing map IDs to MapIDLookupTable
+- added Cathedral of Eternal Night dungeon
+- Broken Shore zone: fixed level to 110, added Cathedral of Eternal Night instance, removed path to Suramar
+- checked and updated entrance coordinates for Scarlet Halls and Scarlet Monastery
+- made UpdateCachedLegionZoneLevels() local, fixed call
+------------------------------------------------------------------------
+r190 | Odica | 2016-10-30 17:07:20 -0500 (Sun, 30 Oct 2016) | 4 lines
+Changed paths:
+   M /trunk/LibTourist-3.0.lua
+   M /trunk/LibTourist-3.0.toc
+
+- renamed Helmouth Cliffs into Maw of Souls
+- added Maw of Souls
+- added map ID for Eye of Azshara to lookup table
+- updated TOC to 70100
+------------------------------------------------------------------------
+r189 | Odica | 2016-10-19 12:28:17 -0500 (Wed, 19 Oct 2016) | 1 line
+Changed paths:
+   M /trunk/LibTourist-3.0.lua
+
+Forgot to test the level fix for Suramar and - of course - I missed something... Should work now.
+------------------------------------------------------------------------
+r188 | Odica | 2016-10-18 16:01:25 -0500 (Tue, 18 Oct 2016) | 4 lines
+Changed paths:
+   M /trunk/LibTourist-3.0.lua
+
+- level for Sarumar no longer scales with player level but is fixed at 110
+- added values for offset and scale for The Broken Isles to avoid errors
+
+KNOWN ISSUE: Currently, cross-zone and cross-continent distance calculations appear to be inaccurate or  incorrect. This mechanism will have to be revised completely. However, distance calculations within a zone are correct.
+------------------------------------------------------------------------
+
