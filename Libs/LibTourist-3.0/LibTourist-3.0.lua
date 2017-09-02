@@ -136,7 +136,8 @@ local function UpdateCachedLegionZoneLevels()
 end
 
 local function PLAYER_LEVEL_UP(self, level)
-	playerLevel = level or UnitLevel("player")
+	-- 02.09.2017: next line is a patch needed until new 7.3 version of this library is available (GnomTEC)
+	playerLevel = (level and level ~= true) and level or UnitLevel("player")
 	for k in pairs(recZones) do
 		recZones[k] = nil
 	end
