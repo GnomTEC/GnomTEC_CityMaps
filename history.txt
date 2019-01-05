@@ -1,5 +1,14 @@
 == GnomTEC CityMaps - Change History 
 
+== 8.1.0.28 (2019-01-05)
+* Updated TOC for WoW patch 8.1.0 (BfA)
+* New LibMSP (breaks compatibility to pre8.0.0 flag addons)
+* Updated libraries: Ace3, ChatThrottleLib, LibTourist
+* removed event handler CHAT_MSG_BATTLEGROUND (not available since BfA)
+* Fix part with removed wow API function CalendarGetDate()
+* Fix part with removed wow API function GetPlayerMapPosition()
+* Adapted code to new LibTourist
+
 === 7.3.0.27 (2017-09-02)
 * fixed PlaySound() issues
 

@@ -1,8 +1,8 @@
 ﻿-- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 7.3.0.27
+-- Version: 8.1.0.28
 -- Author: GnomTEC
--- Copyright 2012-2017 by GnomTEC
+-- Copyright 2012-2019 by GnomTEC
 -- http://www.gnomtec.de/
 -- **********************************************************************
 -- load localization first.
@@ -35,17 +35,17 @@ GnomTEC_CityMaps_Options = {
 -- ----------------------------------------------------------------------
 
 -- internal used version number since WoW only updates from TOC on game start
-local addonVersion = "7.3.0.27"
+local addonVersion = "8.1.0.28"
 
 -- addonInfo for addon registration to GnomTEC API
 local addonInfo = {
 	["Name"] = "GnomTEC CityMaps",
 	["Version"] = addonVersion,
-	["Date"] = "2017-09-02",
-	["Author"] = "GnomTEC",
+	["Date"] = "2019-01-05",
+	["Author"] = "Peter Jack",
 	["Email"] = "info@gnomtec.de",
 	["Website"] = "http://www.gnomtec.de/",
-	["Copyright"] = "(c)2012-2017 by GnomTEC",
+	["Copyright"] = "(c)2012-2019 by GnomTEC",
 }
 
 -- GnomTEC API revision
@@ -2687,43 +2687,37 @@ end
 -- shows player position on map
 function GnomTEC_CityMaps:ShowPlayerPosition()
 	local player = UnitName("player")
-	local posX, posY = GetPlayerMapPosition("player");
-	local map = GetMapInfo();
-	local zone = nil;
+	local posX, posY, zone, uiMapID = Tourist:GetBestZoneCoordinate()
 	local x,y;
 	
-	if not map then
-		if GetCurrentMapZone() == 0 then
-			if GetCurrentMapContinent() == 0 then
-				zone = "Azeroth";
-			elseif GetCurrentMapContinent() == -1 then
-				zone = "Cosmic map";
-			end
-		end
-	else
-		zone = Tourist:GetEnglishZoneFromTexture(map);
-	end
-	
+	zone = Tourist:GetReverseLookupTable()[zone]
+
 	x = 0;
 	
 	if (posX ~= 0 and posY ~= 0 and zone) then
-		if (zone == "Stormwind") then
-			-- Stormwind kennt LibTourist so nicht
-			zone = "Stormwind City"
+		x,y = Tourist:TransposeZoneCoordinate(posX, posY, Tourist:GetLookupTable()[zone], Tourist:GetLookupTable()[self.db.char.displayedMap])
+		-- LibTourist do not limit the transpose to the map (eg between SW and IF it will transpose outside of 0<x/y<1
+		if (x) then
+			if (x < 0) or (x > 1) then
+				x = nil
+			end
 		end
-
-		x,y = Tourist:TransposeZoneCoordinate(posX, posY, zone, self.db.char.displayedMap)
+		if (y) then
+			if (y < 0) or (y > 1) then
+				y = nil
+			end
+		end
 	end
 		
 	if (not x or not y) then
-		GNOMTEC_CITYMAPS_FRAME_POI:SetText("("..(zone or "???").." ; "..string.format("%.3f",posX).." ; "..string.format("%.3f",posY)..")")
+		GNOMTEC_CITYMAPS_FRAME_POI:SetText("("..(Tourist:GetLookupTable()[zone] or "???").." ; "..string.format("%.3f",posX).." ; "..string.format("%.3f",posY)..")")
 		-- Wir sind nicht auf einer Position die auf der aktuellen Karte angezeigt werden könnte
 		local playerFrame = getglobal("GNOMTEC_CITYMAPS_FRAME_PLAYER")
 		if (playerFrame) then
 			playerFrame:Hide()
 		end
 	else
-		GNOMTEC_CITYMAPS_FRAME_POI:SetText("("..self.db.char.displayedMap.." ; "..string.format("%.3f",x).." ; "..string.format("%.3f",y)..")")
+		GNOMTEC_CITYMAPS_FRAME_POI:SetText("("..Tourist:GetLookupTable()[self.db.char.displayedMap].." ; "..string.format("%.3f",x).." ; "..string.format("%.3f",y)..")")
 		-- compute frame offsets
 		x = 1000.0 / 1024.0 * 600.0 * x	+ 15	-- visible texture / texturesize * framesize * position + offset
 		y = -(667.0 / 768.0 * 450.0 * y) - 20	-- visible texture / texturesize * framesize * position - offest
@@ -2845,7 +2839,19 @@ end
 -- function to display a POI on actual map
 function GnomTEC_CityMaps:ShowPOI(id)
 
-	local x,y = Tourist:TransposeZoneCoordinate(POI[id].x, POI[id].y, POI[id].zone, self.db.char.displayedMap)
+	local x,y = Tourist:TransposeZoneCoordinate(POI[id].x, POI[id].y, Tourist:GetLookupTable()[POI[id].zone], Tourist:GetLookupTable()[self.db.char.displayedMap])
+	-- LibTourist do not limit the transpose to the map (eg between SW and IF it will transpose outside of 0<x/y<1
+	if (x) then
+		if (x < 0) or (x > 1) then
+			x = nil
+		end
+	end
+	if (y) then
+		if (y < 0) or (y > 1) then
+			y = nil
+		end
+	end
+
 		
 	if (not x) then
 		-- falls angezeigt dann entfernen
@@ -2932,8 +2938,8 @@ end
 function GnomTEC_CityMaps:FlashPOIs()
 	local hour,minute = GetGameTime();
 	local actualTime = hour*100 + minute
-	local	weekday, month, day, year = CalendarGetDate();
-	local actualDate = (((year *100) + month) * 100) + day	
+	local calendarTime = C_Calendar.GetDate();
+	local actualDate = string.format("%04u%02u%02u",calendarTime.year,calendarTime.month,calendarTime.monthDay)
 	local cleanup = false
 		
 	-- flash all POIs which have a actual announcement
@@ -3059,9 +3065,9 @@ function GnomTEC_CityMaps:SaveFlag(realm, player)
 	r.timeStamp = time()
 	local p
 	if (realm and (realm ~= GetRealmName())) then
-		p = msp_GnomTEC.char[ player.."-"..realm ]
+		p = msp.char[ player.."-"..realm ]
 	else
-		p = msp_GnomTEC.char[ player ]	
+		p = msp.char[ player ]	
 	end
 
 	-- Name
@@ -3352,8 +3358,8 @@ end
 function GnomTEC_CityMaps:CleanupAnnouncement()
 	local hour,minute = GetGameTime();
 	local actualTime = hour*100 + minute
-	local	weekday, month, day, year = CalendarGetDate();
-	local actualDate = (((year *100) + month) * 100) + day	
+	local calendarTime = C_Calendar.GetDate();
+	local actualDate = string.format("%04u%02u%02u",calendarTime.year,calendarTime.month,calendarTime.monthDay)
 
 	-- cleanup announcements
 	local cleanup = {}
@@ -3435,8 +3441,8 @@ function GnomTEC_CityMaps:CheckAnnouncement(sender, message)
 
 		local hour,minute = GetGameTime();
 		local actualTime = hour*100 + minute
-		local	weekday, month, day, year = CalendarGetDate();
-		local actualDate = (((year *100) + month) * 100) + day	
+		local calendarTime = C_Calendar.GetDate();
+		local actualDate = string.format("%04u%02u%02u",calendarTime.year,calendarTime.month,calendarTime.monthDay)
 		
 		-- calculate time values
 		if (not time_start) then
@@ -3506,10 +3512,6 @@ end
 -- ----------------------------------------------------------------------
 -- Event handler
 -- ----------------------------------------------------------------------
-function GnomTEC_CityMaps:CHAT_MSG_BATTLEGROUND(eventName, message, sender)	
-	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
-end
-
 function GnomTEC_CityMaps:CHAT_MSG_CHANNEL(eventName, message, sender)	
 	GnomTEC_CityMaps:CheckAnnouncement(sender, message)
 end
@@ -3597,8 +3599,7 @@ function GnomTEC_CityMaps:OnEnable()
 	GnomTEC_CityMaps:SetStaticDataIsDefault(realm, "Dalaran", GnomTEC_CityMaps:GetStaticDataIsDefault(realm, "Dalaran"))
 		
 	-- initialize hooks and events
-	table.insert( msp_GnomTEC.callback.received, GnomTEC_CityMaps_MSPcallback )
-	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_BATTLEGROUND");
+	table.insert( msp.callback.received, GnomTEC_CityMaps_MSPcallback )
 	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_CHANNEL");
 	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_EMOTE");
 	GnomTEC_CityMaps:RegisterEvent("CHAT_MSG_GUILD");
@@ -3630,7 +3631,7 @@ function GnomTEC_CityMaps:OnDisable()
     -- Called when the addon is disabled
     GnomTEC_CityMaps:UnregisterAllEvents();
     
-    table.vanish( msp_GnomTEC.callback.received, GnomTEC_CityMaps_MSPcallback )
+    table.vanish( msp.callback.received, GnomTEC_CityMaps_MSPcallback )
 end
 
 -- ----------------------------------------------------------------------

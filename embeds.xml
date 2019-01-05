@@ -17,7 +17,7 @@
   <Include file="Libs\AceSerializer-3.0\AceSerializer-3.0.xml"/>
   <Include file="Libs\ChatThrottleLib\ChatThrottleLib.lua"/>
   <Include file="Libs\LibTourist-3.0\lib.xml"/>
-  <Include file="Libs\LibMSP_GnomTEC\LibMSP_GnomTEC.lua"/>
+  <Include file="Libs\LibMSP\LibMSP.xml"/>
 </Ui>
 
 
