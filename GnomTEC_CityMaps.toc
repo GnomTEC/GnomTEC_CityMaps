@@ -1,4 +1,4 @@
-## Interface: 80100
+## Interface: 80200
 ## Title: GnomTEC_CityMaps
 ## Notes: Interactive city map
 ## Notes-deDE: Interaktive Stadtkarten
@@ -12,7 +12,7 @@
 ## Notes-zhCN: 交互式城市地图
 ## Notes-zhTW: 交互式城市地圖
 ## Author: GnomTEC
-## Version: 8.1.0.28
+## Version: 8.2.0.28
 ## SavedVariablesPerCharacter: GnomTEC_CityMaps_Options
 ## SavedVariables: GnomTEC_CityMapsDB, GnomTEC_CityMaps_Flags, GnomTEC_CityMaps_UsedBy, GnomTEC_CityMaps_Announcements
 
