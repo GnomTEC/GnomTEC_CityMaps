@@ -1,5 +1,12 @@
 == GnomTEC CityMaps - Change History 
 
+=== 9.0.2.29 (2020-12-08)
+* Updated TOC for WoW patch 9.0.2
+* Updated libraries: Ace3, ChatThrottleLib, LibTourist, LibMSP
+* Changed Backdrop elements in GUI xml
+* Using C_DateAndTime.GetCurrentCalendarTime()instead of C_Calendar.GetDate()
+
+
 === 8.2.0.28 (2019-06-26)
 * Updated TOC for WoW patch 8.2.0 (BfA)
 

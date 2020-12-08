@@ -1,15 +1,13 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
-	<Frame name="GNOMTEC_CITYMAPS_BOOK" parent="UIParent" toplevel="true" movable="true" resizable="false" clampedToScreen="true" hidden="false">
+	<Frame name="GNOMTEC_CITYMAPS_BOOK" parent="UIParent" toplevel="true" movable="true" resizable="false" clampedToScreen="true" hidden="false" inherits="BackdropTemplate">
 		<Size x="48" y="48" />
 		<Anchors>
 			<Anchor point="CENTER" relativePoint="CENTER"/>
 		</Anchors>
-		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize val="16"/>
-			<TileSize val="16"/>
-			<Color r="0.25" g="0.25" b="0.25"/>
-			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
-		</Backdrop>
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="BACKDROP_TOOLTIP_16_16_5555" type="global"/>
+			<KeyValue key="backdropColor" value="TOOLTIP_DEFAULT_BACKGROUND_COLOR" type="global"/>
+		</KeyValues>
 		<Frames>
 			<CheckButton name="$parent_SHOWHIDE">
 				<Size x="32" y="32" />
@@ -38,17 +36,15 @@
 		</Scripts>
 	</Frame>
 
-	<Frame name="GNOMTEC_CITYMAPS_FRAME" parent="UIParent" toplevel="true" movable="true" resizable="false" clampedToScreen="true" hidden="true">
+	<Frame name="GNOMTEC_CITYMAPS_FRAME" parent="UIParent" toplevel="true" movable="true" resizable="false" clampedToScreen="true" hidden="true" inherits="BackdropTemplate">
 		<Size x="615" y="460" />
 		<Anchors>
 			<Anchor point="CENTER" relativePoint="CENTER"/>
 		</Anchors>
-		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize val="16"/>
-			<TileSize val="16"/>
-			<Color r="0.25" g="0.25" b="0.25"/>
-			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
-		</Backdrop>
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="BACKDROP_TOOLTIP_16_16_5555" type="global"/>
+			<KeyValue key="backdropColor" value="TOOLTIP_DEFAULT_BACKGROUND_COLOR" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer>
 				<FontString name="$parent_TITLE" inherits="GameFontNormalLeft" justifyH="CENTER" text="GnomTEC CityMaps">
@@ -171,19 +167,17 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame name="$parent_INFO" hidden="true">
+			<Frame name="$parent_INFO" hidden="true" inherits="BackdropTemplate">
 				<Size x="500" y="170" />
 				<Anchors>
 					<Anchor point="TOP" relativePoint="TOP">
 						<Offset x="0" y="-30" />
 					</Anchor>
 				</Anchors>
-				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize val="16"/>
-					<TileSize val="16"/>
-					<Color r="0.0" g="0.0" b="0.0"/>
-					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
-				</Backdrop>
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="BACKDROP_TOOLTIP_16_16_5555" type="global"/>
+					<KeyValue key="backdropColor" value="TOOLTIP_DEFAULT_BACKGROUND_COLOR" type="global"/>
+				</KeyValues>
 				<Frames>
 					<ScrollFrame name="$parent_SCROLL" resizable="true" setAllPoints="true">
 						<Anchors>

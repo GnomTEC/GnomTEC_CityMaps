@@ -22,8 +22,8 @@ local Internal = __chomp_internal
 
 local SAFE_BYTES = {
 	[10] = true, -- newline
-	[61] = true, -- equals
 	[92] = true, -- backslash
+	[96] = true, -- grave
 	[124] = true, -- pipe
 }
 
@@ -54,7 +54,19 @@ function AddOn_Chomp.NameMergedRealm(name, realm)
 	return FULL_PLAYER_NAME:format(name, (realm:gsub("[%s%-]", "")))
 end
 
-local Serialize = {}
+function AddOn_Chomp.NameSplitRealm(nameRealm)
+	return string.match(nameRealm, FULL_PLAYER_SPLIT)
+end
+
+local Serialize = setmetatable({}, {
+	__index = function(self) return self["default"] end
+})
+
+-- This is a meta-type used as a default handler for unknown value types
+-- which always errors; no need to explicitly check types elsewhere.
+Serialize["default"] = function(input)
+	error("invalid type: " .. type(input))
+end
 
 Serialize["nil"] = function(input)
 	return "nil"
@@ -73,31 +85,49 @@ function Serialize.string(input)
 end
 
 function Serialize.table(input)
-	local t = {}
-	t[#t + 1] = "{"
-	for K, V in pairs(input) do
-		local typeK, typeV = type(K), type(V)
-		t[#t + 1] = "["
-		if not Serialize[typeK] then
-			error("invalid type")
-		end
-		t[#t + 1] = Serialize[typeK](K)
-		t[#t + 1] = "]="
-		if not Serialize[typeV] then
-			error("invalid type")
-		end
-		t[#t + 1] = Serialize[typeV](V)
-		t[#t + 1] = ","
+	-- These functions are called in loops, so upvalue them eagerly.
+	local floor     = math.floor
+	local strformat = string.format
+	local strfind   = string.find
+	local type      = type
+
+	local output = {}
+
+	-- Handle array parts of tables first from `t[1] .. t[n]` where `n` is
+	-- the last index before the first nil value.
+	local numArray = 0
+	for i, v in ipairs(input) do
+		output[i] = Serialize[type(v)](v)
+		numArray = i
 	end
-	t[#t + 1] = "}"
-	return table.concat(t)
+
+	-- `n` is our current offset for additional entries in the table.
+	local n = numArray
+
+	-- Handle the remaining key/value pairs. We want to skip any integral keys
+	-- that are within the `t[1] .. t[numArray]` range.
+	for k, v in pairs(input) do
+		local typeK, typeV = type(k), type(v)
+		if typeK ~= "number" or k > numArray or k < 1 or k ~= floor(k) then
+			n = n + 1
+
+			if typeK == "string" and strfind(k, "^[a-zA-Z_][a-zA-Z0-9_]*$") then
+				-- Optimization for identifier-like string keys (no braces!).
+				output[n] = strformat("%s=%s", k, Serialize[typeV](v))
+			else
+				output[n] = strformat("[%s]=%s", Serialize[typeK](k), Serialize[typeV](v))
+			end
+		end
+	end
+
+	return strformat("{%s}", table.concat(output, ","))
 end
 
 Internal.Serialize = Serialize
 
 function AddOn_Chomp.Serialize(object)
 	local objectType = type(object)
-	if not Serialize[type(object)] then
+	if not rawget(Serialize, type(object)) then
 		error("AddOn_Chomp.Serialize(): object: expected serializable type, got " .. objectType, 2)
 	end
 	local success, serialized = pcall(Serialize[objectType], object)
@@ -177,7 +207,7 @@ function AddOn_Chomp.CheckLoggedContents(text)
 end
 
 local function CharToQuotedPrintable(c)
-	return ("=%02X"):format(c:byte())
+	return ("`%02X"):format(c:byte())
 end
 
 local function StringToQuotedPrintable(s)
@@ -190,7 +220,7 @@ end
 
 function Internal.EncodeQuotedPrintable(text, restrictBinary)
 	-- First, the quoted-printable escape character.
-	text = text:gsub("=", CharToQuotedPrintable)
+	text = text:gsub("`", CharToQuotedPrintable)
 
 	if not restrictBinary then
 		-- Just NUL, which never works normally.
@@ -250,7 +280,7 @@ function AddOn_Chomp.EncodeQuotedPrintable(text)
 	end
 
 	-- First, the quoted-printable escape character.
-	text = text:gsub("=", CharToQuotedPrintable)
+	text = text:gsub("`", CharToQuotedPrintable)
 
 	-- Logged messages don't permit UI escape sequences.
 	text = text:gsub("|", CharToQuotedPrintable)
@@ -310,12 +340,12 @@ local function DecodeSafeByte(b)
 	if SAFE_BYTES[byteNum] then
 		return string.char(byteNum)
 	else
-		return ("=%02X"):format(byteNum)
+		return ("`%02X"):format(byteNum)
 	end
 end
 
 function Internal.DecodeQuotedPrintable(text, restrictBinary)
-	local decodedText = text:gsub("=(%x%x)", not restrictBinary and DecodeAnyByte or DecodeSafeByte)
+	local decodedText = text:gsub("`(%x%x)", not restrictBinary and DecodeAnyByte or DecodeSafeByte)
 	return decodedText
 end
 
@@ -323,7 +353,7 @@ function AddOn_Chomp.DecodeQuotedPrintable(text)
 	if type(text) ~= "string" then
 		error("AddOn_Chomp.DecodeQuotedPrintable(): text: expected string, got " .. type(text), 2)
 	end
-	local decodedText = text:gsub("=(%x%x)", DecodeAnyByte)
+	local decodedText = text:gsub("`(%x%x)", DecodeAnyByte)
 	return decodedText
 end
 
@@ -346,14 +376,37 @@ function AddOn_Chomp.SafeSubString(text, first, last, textLen)
 	end
 	if textLen > last then
 		local b3, b2, b1 = text:byte(last - 2, last)
-		-- 61 is numeric code for "="
-		if b1 == 61 or (b1 >= 194 and b1 <= 244) then
+		-- 96 is numeric code for "`"
+		if b1 == 96 or (b1 >= 194 and b1 <= 244) then
 			offset = 1
-		elseif b2 == 61 or (b2 >= 224 and b2 <= 244) then
+		elseif b2 == 96 or (b2 >= 224 and b2 <= 244) then
 			offset = 2
 		elseif b3 >= 240 and b3 <= 244 then
 			offset = 3
 		end
 	end
 	return (text:sub(first, last - offset)), offset
+end
+
+function AddOn_Chomp.InsensitiveStringEquals(a, b)
+	if a == b then
+		return true
+	end
+
+	if type(a) ~= "string" or type(b) ~= "string" then
+		return false
+	end
+
+	-- If the UTF8 library has been loaded (which globally mutates the
+	-- string table - actually helpful here!) we'll prefer that for any case
+	-- insensitive comparisons, since string.lower will use the process
+	-- locale which is likely C, so ASCII only.
+	--
+	-- The UTF8 library is left optional as it's quite large. You can pull it
+	-- in if you want better behaviour in non-English locales.
+	--
+	-- See: <https://www.curseforge.com/wow/addons/utf8>
+
+	local lower = string.utf8lower or string.lower
+	return lower(a) == lower(b)
 end

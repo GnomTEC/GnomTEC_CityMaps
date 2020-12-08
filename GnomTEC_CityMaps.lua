@@ -1,8 +1,8 @@
 ﻿-- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 8.2.0.28
+-- Version: 9.0.2.29
 -- Author: GnomTEC
--- Copyright 2012-2019 by GnomTEC
+-- Copyright 2012-2020 by GnomTEC
 -- http://www.gnomtec.de/
 -- **********************************************************************
 -- load localization first.
@@ -35,17 +35,17 @@ GnomTEC_CityMaps_Options = {
 -- ----------------------------------------------------------------------
 
 -- internal used version number since WoW only updates from TOC on game start
-local addonVersion = "8.2.0.28"
+local addonVersion = "9.0.2.29"
 
 -- addonInfo for addon registration to GnomTEC API
 local addonInfo = {
 	["Name"] = "GnomTEC CityMaps",
 	["Version"] = addonVersion,
-	["Date"] = "2019-06-26",
+	["Date"] = "2020-12-08",
 	["Author"] = "Peter Jack",
 	["Email"] = "info@gnomtec.de",
 	["Website"] = "http://www.gnomtec.de/",
-	["Copyright"] = "(c)2012-2019 by GnomTEC",
+	["Copyright"] = "(c)2012-2020 by GnomTEC",
 }
 
 -- GnomTEC API revision
@@ -2938,8 +2938,8 @@ end
 function GnomTEC_CityMaps:FlashPOIs()
 	local hour,minute = GetGameTime();
 	local actualTime = hour*100 + minute
-	local calendarTime = C_Calendar.GetDate();
-	local actualDate = string.format("%04u%02u%02u",calendarTime.year,calendarTime.month,calendarTime.monthDay)
+	local d	= C_DateAndTime.GetCurrentCalendarTime()
+	local actualDate = string.format("%04u%02u%02u",d.year,d.month,d.monthDay)
 	local cleanup = false
 		
 	-- flash all POIs which have a actual announcement
@@ -3358,8 +3358,8 @@ end
 function GnomTEC_CityMaps:CleanupAnnouncement()
 	local hour,minute = GetGameTime();
 	local actualTime = hour*100 + minute
-	local calendarTime = C_Calendar.GetDate();
-	local actualDate = string.format("%04u%02u%02u",calendarTime.year,calendarTime.month,calendarTime.monthDay)
+	local d	= C_DateAndTime.GetCurrentCalendarTime()
+	local actualDate = string.format("%04u%02u%02u",d.year,d.month,d.monthDay)
 
 	-- cleanup announcements
 	local cleanup = {}
@@ -3441,8 +3441,8 @@ function GnomTEC_CityMaps:CheckAnnouncement(sender, message)
 
 		local hour,minute = GetGameTime();
 		local actualTime = hour*100 + minute
-		local calendarTime = C_Calendar.GetDate();
-		local actualDate = string.format("%04u%02u%02u",calendarTime.year,calendarTime.month,calendarTime.monthDay)
+		local d	= C_DateAndTime.GetCurrentCalendarTime()
+		local actualDate = string.format("%04u%02u%02u",d.year,d.month,d.monthDay)
 		
 		-- calculate time values
 		if (not time_start) then
