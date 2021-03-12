@@ -1,8 +1,8 @@
 ﻿-- **********************************************************************
 -- GnomTEC CityMaps
--- Version: 9.0.2.29
+-- Version: 9.0.5.29
 -- Author: GnomTEC
--- Copyright 2012-2020 by GnomTEC
+-- Copyright 2012-2021 by GnomTEC
 -- http://www.gnomtec.de/
 -- **********************************************************************
 -- load localization first.
@@ -35,17 +35,17 @@ GnomTEC_CityMaps_Options = {
 -- ----------------------------------------------------------------------
 
 -- internal used version number since WoW only updates from TOC on game start
-local addonVersion = "9.0.2.29"
+local addonVersion = "9.0.5.29"
 
 -- addonInfo for addon registration to GnomTEC API
 local addonInfo = {
 	["Name"] = "GnomTEC CityMaps",
 	["Version"] = addonVersion,
-	["Date"] = "2020-12-08",
+	["Date"] = "2021-03-12",
 	["Author"] = "Peter Jack",
 	["Email"] = "info@gnomtec.de",
 	["Website"] = "http://www.gnomtec.de/",
-	["Copyright"] = "(c)2012-2020 by GnomTEC",
+	["Copyright"] = "(c)2012-2021 by GnomTEC",
 }
 
 -- GnomTEC API revision
